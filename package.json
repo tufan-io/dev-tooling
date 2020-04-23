@@ -1,0 +1,209 @@
+{
+  "name": "@tufan-io/dev-tooling",
+  "version": "0.0.1",
+  "private": false,
+  "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/tufan-io/dev-tooling#readme",
+  "bugs": {
+    "url": "https://github.com/tufan-io/dev-tooling/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tufan-io/dev-tooling.git"
+  },
+  "license": "Apache-2.0",
+  "author": "tufan.io",
+  "files": [
+    "dist",
+    "docs"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "directories": {
+    "doc": "docs"
+  },
+  "bin": {
+    "config-dev-tooling": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "npm-run-batch",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "check-coverage": "nyc check-coverage",
+    "check-run-scripts": "run-batch",
+    "checks": "run-batch",
+    "clean": "rimraf dist .nyc_output coverage *.tsbuildinfo",
+    "cloc": "run-batch",
+    "cloc-md": "cloc --exclude-dir=test --quiet --sum-one --hide-rate --unix --by-file --md --out=cloc.md ./src",
+    "cloc-report": "cloc --exclude-dir=test --quiet --sum-one --hide-rate --unix --out=cloc.report ./src",
+    "cloc_": "cloc --exclude-dir=test --quiet --sum-one --hide-rate --unix ./src",
+    "commit": "git-cz",
+    "compile": "tsc",
+    "compile:watch": "tsc -w",
+    "dep-check": "dependency-check . --no-dev",
+    "dependency-upgrade": "run-batch",
+    "ensure-bins": "which npm-check sort-package-json",
+    "format": "tsfmt -r",
+    "git-add_": "git add .",
+    "git-commit-upgrade_": "git diff-index --quiet HEAD || git commit -m \"chore: 🤖 updating dependencies\"",
+    "lint": "tslint -c tslint.json --project ./tsconfig.json --format stylish",
+    "no-circular-deps": "madge --circular dist/index.js",
+    "no-mods": "git-mods",
+    "npm-check_": "npm-check -y",
+    "nyc-report": "nyc report --reporter=text-summary",
+    "pkg-ok": "pkg-ok",
+    "postinstall": "node dist/index.js .",
+    "pre-commit-hook": "run-batch",
+    "pre-push-hook": "run-batch",
+    "qt": "npm-run-batch",
+    "secure": "npm audit",
+    "sh": "npm-sh",
+    "snapshots": "cross-env NODE_ENV=test ava --verbose --update-snapshots",
+    "sort-package-json": "sort-package-json",
+    "staged-mods-ok": "git-mods --staged_ok",
+    "test": "cross-env NODE_ENV=test nyc -r lcov -r text-summary -r json-summary ava --verbose",
+    "test-no-cover": "cross-env NODE_ENV=test ava --verbose",
+    "todos": "leasot --exit-nicely --skip-unsupported ./src",
+    "upgrade_": "npm upgrade"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pre-commit-hook",
+      "pre-push": "npm run pre-push-hook"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "ava": {
+    "files": [
+      "dist/**/test.js",
+      "dist/**/test/**/*.js",
+      "!dist/**/test/fixtures/**/*.js",
+      "!dist/**/helpers/**"
+    ],
+    "serial": false,
+    "sources": [
+      "dist/**/*.js"
+    ]
+  },
+  "nyc": {
+    "branches": 100,
+    "exclude": [
+      "**/test/**",
+      "**/helpers/**"
+    ],
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "functions": 100,
+    "lines": 100,
+    "statements": 100
+  },
+  "dependencies": {
+    "fast-deep-equal": "^3.1.1",
+    "fs-extra": "^9.0.0",
+    "inquirer": "^7.1.0",
+    "remark": "^12.0.0"
+  },
+  "devDependencies": {
+    "@actions/core": "^1.2.0",
+    "@types/inquirer": "^6.5.0",
+    "@types/node": "^12.12.17",
+    "ava": "^2.4.0",
+    "cloc": "^2.5.1",
+    "commitizen": "^4.0.3",
+    "conventional-changelog-cli": "^2.0.28",
+    "cross-env": "^6.0.3",
+    "cz-conventional-changelog": "^3.0.2",
+    "dependency-check": "^4.1.0",
+    "git-mods": "^1.0.10",
+    "graceful-fs": "^4.2.3",
+    "husky": "^3.1.0",
+    "leasot": "^9.3.1",
+    "madge": "^3.6.0",
+    "mkdirp": "^0.5.1",
+    "node-emoji": "^1.5.1",
+    "npm-run-batch": "0.0.9",
+    "nyc": "^15.0.0-beta.3",
+    "parse-git-config": "^3.0.0",
+    "pkg-ok": "^2.3.1",
+    "rimraf": "^3.0.0",
+    "sort-package-json": "^1.31.0",
+    "tslint": "^5.20.1",
+    "tslint-config-security": "^1.16.0",
+    "tslint-sonarts": "^1.9.0",
+    "typescript": "^3.7.3",
+    "typescript-formatter": "^7.2.2",
+    "typestrict": "^1.0.2",
+    "which": "^2.0.2"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "run-batch": {
+    "build": [
+      "format",
+      "lint",
+      "clean",
+      "compile",
+      "test",
+      "no-circular-deps",
+      "cloc",
+      "todos"
+    ],
+    "qt": [
+      "compile",
+      "test-no-cover"
+    ],
+    "checks": [
+      "lint",
+      "check-coverage",
+      "dep-check",
+      "no-circular-deps",
+      "pkg-ok",
+      "staged-mods-ok"
+    ],
+    "pre-commit-hook": [
+      "check-coverage",
+      "dep-check",
+      "pkg-ok",
+      "staged-mods-ok"
+    ],
+    "pre-push-hook": [
+      "secure",
+      "no-mods"
+    ],
+    "cloc": [
+      "cloc-md",
+      "cloc-report",
+      "cloc_"
+    ],
+    "dependency-upgrade": [
+      "no-mods",
+      "ensure-bins",
+      "sort-package-json",
+      "npm-check_",
+      "upgrade_",
+      "dep-check",
+      "no-circular-deps",
+      "git-add_",
+      "build",
+      "git-commit-upgrade_"
+    ],
+    "check-run-scripts": [
+      "build",
+      "qt",
+      "checks",
+      "pre-commit-hook",
+      "pre-push-hook",
+      "dependency-upgrade"
+    ]
+  }
+}

@@ -16,7 +16,8 @@
   "author": "tufan.io",
   "files": [
     "dist",
-    "docs"
+    "docs",
+    ".github"
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

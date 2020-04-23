@@ -98,6 +98,7 @@ function mergePackageJson(scope, name, description, isPrivate) {
       dst.config = src.config; // commitzen
       dst.scripts = src.scripts;
       dst.scripts["dep-check"] = `"dependency-check . --no-dev",`;
+      dst.files = src.files.filter((x) => !x.match(/\.github/));
       delete dst.scripts.postintall;
       if (isPrivate) {
         dst.license = "SEE LICENSE IN './LICENSE'";

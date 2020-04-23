@@ -10,7 +10,7 @@ export function main(cwd = process.cwd()) {
     return prompt(questions(packageJson.name, packageJson.description))
       .then(({ pkgname, description, isPrivate }) => {
         const [scope, name] = [
-          "",
+          "tufan-io",
           ...(pkgname as string).split("/"),
         ].slice(-2);
         return manageModule(scope, name, description, isPrivate, cwd);

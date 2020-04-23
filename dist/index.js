@@ -11,7 +11,7 @@ function main(cwd = process.cwd()) {
         return inquirer_1.prompt(questions_1.questions(packageJson.name, packageJson.description))
             .then(({ pkgname, description, isPrivate }) => {
             const [scope, name] = [
-                "",
+                "tufan-io",
                 ...pkgname.split("/"),
             ].slice(-2);
             return manage_module_1.manageModule(scope, name, description, isPrivate, cwd);

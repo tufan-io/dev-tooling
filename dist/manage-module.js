@@ -5,7 +5,7 @@ const fs = require("fs-extra");
 const path = require("path");
 const pkg_dir_1 = require("pkg-dir");
 const regexp_replacer_1 = require("./regexp-replacer");
-const identityTransform = (_src, dst, _dstFile) => dst;
+const identityTransform = (src, _dst, _dstFile) => src;
 function manageModule(scope, name, description, isPrivate, cwd = process.cwd()) {
     const pDir = pkg_dir_1.default.sync(cwd);
     const root = path.resolve(`${__dirname}/..`);
@@ -28,11 +28,34 @@ function manageModule(scope, name, description, isPrivate, cwd = process.cwd()) 
         [`templates/tsconfig.json`, identityTransform],
         [`templates/tslint.json`, identityTransform],
     ];
-    files.forEach(([relativeFpath, transformer]) => copyOrModify(`${root}/${relativeFpath}`, `${pDir}/${relativeFpath.replace("templates/", "")}`, transformer));
+    files.forEach(([relativeFpath, transformer]) => {
+        console.log(`${root}/${relativeFpath} -> ${pDir}/${relativeFpath.replace("templates/", "")}`);
+        copyOrModify(`${root}/${relativeFpath}`, `${pDir}/${relativeFpath.replace("templates/", "")}`, transformer);
+    });
     fs.moveSync(`${pDir}/_gitignore`, `${pDir}/.gitignore`);
     fs.moveSync(`${pDir}/_npmignore`, `${pDir}/.npmignore`);
     if (scope) {
         spawn("npm", `config set @${scope}:registry https://npm.pkg.github.com/$scope`.split(" "), { cwd: pDir });
+    }
+    if (!fs.pathExistsSync(`${pDir}/src`)) {
+        fs.ensureDirSync(`${pDir}/src/test`);
+        const sample = {
+            src: [
+                "export function main() {",
+                "  console.log(\"tufan.io wishes you have an awesome day!\");",
+                "}",
+                "",
+            ].join("\n"),
+            test: [
+                "import test from \"ava\";",
+                "test(\"simple\", async (t) => {",
+                "  t.pass();",
+                "});",
+                "",
+            ].join("\n"),
+        };
+        fs.writeFileSync(`${pDir}/src/index.ts`, sample.src, "utf8");
+        fs.writeFileSync(`${pDir}/src/test/index.ts`, sample.test, "utf8");
     }
 }
 exports.manageModule = manageModule;
@@ -46,18 +69,19 @@ function copyOrModify(srcPath, dstPath, transformer) {
     fs.writeFileSync(dstPath, dst, "utf8");
 }
 function mergeREADME(scope, name, description) {
-    return (_src, dst, _dstFile) => {
-        dst = regexp_replacer_1.regexpReplacer(dst, [{
-                match: /tufan-io/g,
-                replace: scope,
-            }, {
-                match: /dev-tooling/g,
-                replace: name,
-            }, {
-                match: new RegExp("[TODO: Describe your module here]"),
-                replace: description,
-            }]);
-        return dst;
+    return (src, dst, _dstFile) => {
+        return !!dst
+            ? dst
+            : regexp_replacer_1.regexpReplacer(src, [{
+                    match: /tufan-io/g,
+                    replace: scope,
+                }, {
+                    match: /dev-tooling/g,
+                    replace: name,
+                }, {
+                    match: new RegExp("[TODO: Describe your module here]"),
+                    replace: description,
+                }]);
     };
 }
 function mergeLicense(isPrivate, root) {

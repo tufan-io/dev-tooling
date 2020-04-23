@@ -12,26 +12,28 @@ export function manageModule(scope, name, description, isPrivate, cwd = process.
     return;
   }
   const files = [
-    [`.editorconfig`, identityTransform],
-    [`.github/workflows/simple-ci.yml`, identityTransform],
-    [`.gitignore`, identityTransform],
-    [`.npmignore`, identityTransform],
     [`docs/DevTools.md`, identityTransform],
-    [`.vscode/launch.json`, identityTransform],
-    [`.vscode/settings.json`, identityTransform],
-    [`.vscode/tasks.json`, identityTransform],
-    [`code-of-conduct.md`, identityTransform],
     [`LICENSE`, mergeLicense(isPrivate, root)],
     [`package.json`, mergePackageJson(scope, name, description, isPrivate)],
     [`README.md`, mergeREADME(scope, name, description)],
-    [`tsconfig.json`, identityTransform],
-    [`tslint.json`, identityTransform],
+    [`templates/.editorconfig`, identityTransform],
+    [`templates/.github/workflows/simple-ci.yml`, identityTransform],
+    [`templates/_gitignore`, identityTransform],
+    [`templates/_npmignore`, identityTransform],
+    [`templates/.vscode/launch.json`, identityTransform],
+    [`templates/.vscode/settings.json`, identityTransform],
+    [`templates/.vscode/tasks.json`, identityTransform],
+    [`templates/code-of-conduct.md`, identityTransform],
+    [`templates/tsconfig.json`, identityTransform],
+    [`templates/tslint.json`, identityTransform],
   ];
-  files.forEach(([relativeFpath, transformer]) =>
+  files.forEach(([relativeFpath, transformer]: [string, any]) =>
     copyOrModify(
       `${root}/${relativeFpath}`,
-      `${pDir}/${relativeFpath}`,
-      transformer as any));
+      `${pDir}/${relativeFpath.replace("templates/", "")}`,
+      transformer));
+  fs.moveSync(`${pDir}/_gitignore`, `${pDir}/.gitignore`);
+  fs.moveSync(`${pDir}/_npmignore`, `${pDir}/.npmignore`)
   if (scope) {
     spawn(
       "npm",

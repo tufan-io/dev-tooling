@@ -17,13 +17,7 @@
   "files": [
     "dist",
     "docs",
-    ".github",
-    "tsconfig.json",
-    "tslint.json",
-    ".gitignore",
-    ".npmignore",
-    ".editorconfig",
-    ".vscode"
+    "templates"
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -93,6 +87,7 @@
   },
   "devDependencies": {
     "@actions/core": "^1.2.0",
+    "@types/fs-extra": "^8.1.0",
     "@types/inquirer": "^6.5.0",
     "@types/node": "^13.13.2",
     "ava": "^3.7.1",

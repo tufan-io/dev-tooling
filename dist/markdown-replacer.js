@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Remark = require("remark");
 const deepEqual = require("fast-deep-equal");
+const Remark = require("remark");
 const removePositionals = (o) => {
     switch (Object.prototype.toString.apply(o)) {
-        case '[object Object]':
+        case "[object Object]":
             const { position, ...rest } = o;
             return Object.keys(rest).reduce((acc, k) => {
                 acc[k] = removePositionals(rest[k]);
                 return acc;
             }, {});
-        case '[object Array]':
+        case "[object Array]":
             return o.map((el) => removePositionals(el));
         default:
             return o;
@@ -21,22 +21,22 @@ const findAndReplace = (full, searchFor, replaceWith) => {
         return replaceWith;
     }
     switch (Object.prototype.toString.apply(full)) {
-        case '[object Object]':
+        case "[object Object]":
             return Object.keys(full).reduce((acc, k) => {
                 acc[k] = findAndReplace(full[k], searchFor, replaceWith);
                 return acc;
             }, {});
-        case '[object Array]':
+        case "[object Array]":
             return full.map((el) => findAndReplace(el, searchFor, replaceWith));
         default:
             return full;
     }
 };
 const remark = Remark()
-    .data('settings', {
+    .data("settings", {
     commonmark: true,
-    emphasis: '*',
-    strong: '*',
+    emphasis: "*",
+    strong: "*",
 });
 function parse(input) {
     return removePositionals(remark.parse(input));

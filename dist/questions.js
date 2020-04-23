@@ -1,28 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const readPkgUp = require("read-pkg-up");
-exports.questions = (cwd) => {
-    const { pkg: { name, description } } = readPkgUp.sync({ cwd });
+exports.questions = (name, description) => {
     return [{
+            type: "text",
+            name: "pkgname",
+            message: "npm module name",
             default: name,
             format: (val) => !!val && val.test("/") && val[0] !== "@" ? `@${val}` : val,
-            message: "npm module name",
-            name: "name",
-            type: "text",
         }, {
-            default: description,
-            message: "description of what it does:",
+            type: "text",
             name: "description",
-            type: "text",
+            message: "description of what it does:",
+            default: description || "",
         }, {
+            type: "list",
+            name: "isPrivate",
+            message: "is this a private module?",
             choices: [
-                true,
-                false,
+                { name: "true", value: true },
+                { name: "false", value: false },
             ],
             default: true,
-            message: "is this a private module?",
-            name: "isPrivate",
-            type: "list",
         }];
 };
 //# sourceMappingURL=questions.js.map

@@ -32,10 +32,12 @@ export function manageModule(scope, name, description, isPrivate, cwd = process.
       `${root}/${relativeFpath}`,
       `${pDir}/${relativeFpath}`,
       transformer as any));
-  spawn(
-    "npm",
-    `config set @${scope}:registry https://npm.pkg.github.com/$scope`.split(" "),
-    { cwd: pDir });
+  if (scope) {
+    spawn(
+      "npm",
+      `config set @${scope}:registry https://npm.pkg.github.com/$scope`.split(" "),
+      { cwd: pDir });
+  }
 }
 
 function copyOrModify(
@@ -45,20 +47,15 @@ function copyOrModify(
 ) {
   // tslint:disable: tsr-detect-non-literal-fs-filename
   if (!fs.statSync(srcPath).isFile()) {
-    throw new Error(`copyOnModify only supports copying files`)
+    throw new Error(`copyOnModify only supports copying files`);
   }
-  if (fs.existsSync(dstPath)) {
-    const src = fs.readFileSync(srcPath, "utf8");
-    const dst = transformer(
-      src,
-      fs.readFileSync(dstPath, "utf8"),
-      dstPath,
-    );
-    fs.writeFileSync(dstPath, dst, "utf8");
-  } else {
-    fs.ensureDirSync(path.dirname(dstPath));
-    fs.copySync(srcPath, dstPath);
-  }
+  const src = fs.readFileSync(srcPath, "utf8");
+  fs.ensureFileSync(dstPath);
+  const dst = transformer(
+    src,
+    fs.readFileSync(dstPath, "utf8"),
+    dstPath);
+  fs.writeFileSync(dstPath, dst, "utf8");
 }
 
 function mergeREADME(scope: string, name: string, description: string) {
@@ -75,44 +72,53 @@ function mergeREADME(scope: string, name: string, description: string) {
         replace: description,
       }]);
     return dst;
-  }
+  };
 }
 
 function mergeLicense(isPrivate: boolean, root: string) {
-  return (_src: string, _dst: string, _dstFile: string) =>
-    (isPrivate)
-      ? fs.readFileSync(`${root}/docs/PRIVATE-LICENSE`, "utf8")
-      : fs.readFileSync(`${root}/LICENSE`, "utf8");
+  const license = (isPrivate)
+    ? fs.readFileSync(`${root}/docs/PRIVATE-LICENSE`, "utf8")
+    : fs.readFileSync(`${root}/LICENSE`, "utf8");
+  return (_src: string, _dst: string, _dstFile: string) => license;
 }
 
 function mergePackageJson(scope, name, description, isPrivate) {
   return (srcStr: string, dstStr: string, _dstFile: string) => {
     const src = JSON.parse(srcStr);
     const dst = JSON.parse(dstStr);
-    dst[`run-batch`] = src[`run-batch`];
-    dst.engines = src.engines;
-    dst.ava = src.ava;
-    dst.nyc = src.nyc;
-    dst.name = name;
-    dst.description = description;
-    dst.husky = src.husky;
-    dst.config = src.config;
-    dst.scripts = src.scripts;
-    if (isPrivate) {
-      dst.license = "SEE LICENSE IN './LICENSE'";
-    } else {
-      dst.license = "Apache-2.0";
+    if (!("dev-tooling" in dst)) {
+      dst[`run-batch`] = src[`run-batch`];
+      dst.name = name;
+      dst.description = description;
+      dst.engines = src.engines;
+      dst.publishConfig = src.publishConfig;
+      dst.ava = src.ava;
+      dst.nyc = src.nyc;
+      dst.husky = src.husky;
+      dst.config = src.config; // commitzen
+      dst.scripts = src.scripts;
+      dst.scripts["dep-check"] = `"dependency-check . --no-dev",`;
+      delete dst.scripts.postintall;
+      if (isPrivate) {
+        dst.license = "SEE LICENSE IN './LICENSE'";
+      } else {
+        dst.license = "Apache-2.0";
+      }
+      const serialized = JSON.stringify(dst, null, 2);
+      // this changes any git urls embedded in package.json
+      regexpReplacer(serialized, [{
+        match: /tufan-io/g,
+        replace: scope,
+      }, {
+        match: /dev-tooling/g,
+        replace: name,
+      }]);
+      dst["dev-tooling"] = {
+        version: src.version,
+      };
+      return serialized;
     }
-    const serialized = JSON.stringify(dst, null, 2);
-    // this changes any git urls embedded in package.json
-    regexpReplacer(serialized, [{
-      match: /tufan-io/g,
-      replace: scope,
-    }, {
-      match: /dev-tooling/g,
-      replace: name,
-    }]);
-    return serialized;
+    // possibly deal with version upgrades here.
   };
 }
 

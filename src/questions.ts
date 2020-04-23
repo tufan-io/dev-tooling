@@ -1,28 +1,26 @@
-import { QuestionCollection } from "inquirer";
-import readPkgUp = require("read-pkg-up");
 
-export const questions = (cwd: string): QuestionCollection => {
-  const { pkg: { name, description } } = readPkgUp.sync({ cwd });
+export const questions = (name: string, description: string) => {
+  // tslint:disable: object-literal-sort-keys
   return [{
+    type: "text",
+    name: "pkgname",
+    message: "npm module name",
     default: name,
     format: (val) =>
       !!val && val.test("/") && val[0] !== "@" ? `@${val}` : val,
-    message: "npm module name",
-    name: "name",
-    type: "text",
   }, {
-    default: description,
-    message: "description of what it does:",
+    type: "text",
     name: "description",
-    type: "text",
+    message: "description of what it does:",
+    default: description || "",
   }, {
+    type: "list",
+    name: "isPrivate",
+    message: "is this a private module?",
     choices: [
-      true,
-      false,
+      { name: "true", value: true },
+      { name: "false", value: false },
     ],
     default: true,
-    message: "is this a private module?",
-    name: "isPrivate",
-    type: "list",
   }];
 };

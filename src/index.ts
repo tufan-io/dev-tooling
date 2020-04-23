@@ -1,18 +1,21 @@
 #!/usr/bin/env node
 import { prompt } from "inquirer";
+import * as readPkgUp from "read-pkg-up";
 import { manageModule } from "./manage-module";
 import { questions } from "./questions";
 
 export function main(cwd = process.cwd()) {
-  console.log({ cwd });
-  return prompt(questions(cwd))
-    .then(({ name, description, isPrivate, ...rest }) => {
-      console.log({ name, description, isPrivate, rest });
-      const parts = ["", ...name.split("/")].slice(-2);
-      const scope = parts[0];
-      name = parts[1];
-      return manageModule(scope, name, description, isPrivate, cwd);
-    });
+  const { packageJson } = readPkgUp.sync({ cwd });
+  if (!("dev-tooling" in packageJson)) {
+    return prompt(questions(packageJson.name, packageJson.description))
+      .then(({ pkgname, description, isPrivate }) => {
+        const [scope, name] = [
+          "",
+          ...(pkgname as string).split("/"),
+        ].slice(-2);
+        return manageModule(scope, name, description, isPrivate, cwd);
+      });
+  }
 }
 
 if (!module.parent) {

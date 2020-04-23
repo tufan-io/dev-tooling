@@ -40,7 +40,7 @@
     "commit": "git-cz",
     "compile": "tsc",
     "compile:watch": "tsc -w",
-    "dep-check": "dependency-check . --no-dev",
+    "dep-check": "dependency-check . --no-dev -i fast-deep-equal -i remark",
     "dependency-upgrade": "run-batch",
     "ensure-bins": "which npm-check sort-package-json",
     "format": "tsfmt -r",
@@ -52,7 +52,6 @@
     "npm-check_": "npm-check -y",
     "nyc-report": "nyc report --reporter=text-summary",
     "pkg-ok": "pkg-ok",
-    "postinstall": "node dist/index.js .",
     "pre-commit-hook": "run-batch",
     "pre-push-hook": "run-batch",
     "qt": "npm-run-batch",
@@ -77,55 +76,31 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "ava": {
-    "files": [
-      "dist/**/test.js",
-      "dist/**/test/**/*.js",
-      "!dist/**/test/fixtures/**/*.js",
-      "!dist/**/helpers/**"
-    ],
-    "serial": false,
-    "sources": [
-      "dist/**/*.js"
-    ]
-  },
-  "nyc": {
-    "branches": 100,
-    "exclude": [
-      "**/test/**",
-      "**/helpers/**"
-    ],
-    "extension": [
-      ".ts",
-      ".tsx"
-    ],
-    "functions": 100,
-    "lines": 100,
-    "statements": 100
-  },
   "dependencies": {
     "fast-deep-equal": "^3.1.1",
     "fs-extra": "^9.0.0",
     "inquirer": "^7.1.0",
+    "pkg-dir": "^4.2.0",
+    "read-pkg-up": "^7.0.1",
     "remark": "^12.0.0"
   },
   "devDependencies": {
     "@actions/core": "^1.2.0",
     "@types/inquirer": "^6.5.0",
-    "@types/node": "^12.12.17",
-    "ava": "^2.4.0",
+    "@types/node": "^13.13.2",
+    "ava": "^3.7.1",
     "cloc": "^2.5.1",
     "commitizen": "^4.0.3",
     "conventional-changelog-cli": "^2.0.28",
-    "cross-env": "^6.0.3",
+    "cross-env": "^7.0.2",
     "cz-conventional-changelog": "^3.0.2",
     "dependency-check": "^4.1.0",
     "git-mods": "^1.0.10",
     "graceful-fs": "^4.2.3",
-    "husky": "^3.1.0",
-    "leasot": "^9.3.1",
+    "husky": "^4.2.5",
+    "leasot": "^10.2.0",
     "madge": "^3.6.0",
-    "mkdirp": "^0.5.1",
+    "mkdirp": "^1.0.4",
     "node-emoji": "^1.5.1",
     "npm-run-batch": "0.0.9",
     "nyc": "^15.0.0-beta.3",
@@ -133,7 +108,7 @@
     "pkg-ok": "^2.3.1",
     "rimraf": "^3.0.0",
     "sort-package-json": "^1.31.0",
-    "tslint": "^5.20.1",
+    "tslint": "^6.1.1",
     "tslint-config-security": "^1.16.0",
     "tslint-sonarts": "^1.9.0",
     "typescript": "^3.7.3",
@@ -142,10 +117,48 @@
     "which": "^2.0.2"
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=13.0.0"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
+  },
+  "ava": {
+    "files": [
+      "dist/**/test.js",
+      "dist/**/test/**/*.js",
+      "!dist/**/test/fixtures/**/*.js",
+      "!dist/**/helpers/**",
+      "!.tmp"
+    ]
+  },
+  "nyc": {
+    "exclude": [
+      "**/test/**",
+      "**/helpers/**",
+      ".tmp"
+    ],
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "watermarks": {
+      "branches": [
+        100,
+        100
+      ],
+      "functions": [
+        100,
+        100
+      ],
+      "lines": [
+        100,
+        100
+      ],
+      "statements": [
+        100,
+        100
+      ]
+    }
   },
   "run-batch": {
     "build": [

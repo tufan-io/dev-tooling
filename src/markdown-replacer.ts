@@ -1,43 +1,43 @@
-import * as Remark from "remark";
 import * as deepEqual from "fast-deep-equal";
+import * as Remark from "remark";
 
 const removePositionals = (o) => {
   switch (Object.prototype.toString.apply(o)) {
-    case '[object Object]':
+    case "[object Object]":
       const { position, ...rest } = o;
       return Object.keys(rest).reduce((acc, k) => {
         acc[k] = removePositionals(rest[k]);
         return acc;
       }, {} as object);
-    case '[object Array]':
+    case "[object Array]":
       return o.map((el) => removePositionals(el));
     default:
       return o;
   }
-}
+};
 
 const findAndReplace = (full, searchFor, replaceWith) => {
   if (deepEqual(full, searchFor)) {
     return replaceWith;
   }
   switch (Object.prototype.toString.apply(full)) {
-    case '[object Object]':
+    case "[object Object]":
       return Object.keys(full).reduce((acc, k) => {
         acc[k] = findAndReplace(full[k], searchFor, replaceWith);
         return acc;
       }, {} as object);
-    case '[object Array]':
+    case "[object Array]":
       return full.map((el) => findAndReplace(el, searchFor, replaceWith));
     default:
       return full;
   }
-}
+};
 
 const remark = Remark()
-  .data('settings', {
+  .data("settings", {
     commonmark: true,
-    emphasis: '*',
-    strong: '*',
+    emphasis: "*",
+    strong: "*",
   });
 
 function parse(input: string) {

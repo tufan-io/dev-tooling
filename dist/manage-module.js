@@ -13,20 +13,20 @@ function manageModule(scope, name, description, isPrivate, cwd = process.cwd()) 
         return;
     }
     const files = [
+        [`.editorconfig`, identityTransform],
         [`.github/workflows/simple-ci.yml`, identityTransform],
-        [`tsconfig.json`, identityTransform],
-        [`tslint.json`, identityTransform],
         [`.gitignore`, identityTransform],
         [`.npmignore`, identityTransform],
-        [`.editorconfig`, identityTransform],
         [`docs/DevTools.md`, identityTransform],
-        [`code-of-conduct.md`, identityTransform],
         [`.vscode/launch.json`, identityTransform],
         [`.vscode/settings.json`, identityTransform],
         [`.vscode/tasks.json`, identityTransform],
+        [`code-of-conduct.md`, identityTransform],
+        [`LICENSE`, mergeLicense(isPrivate, root)],
         [`package.json`, mergePackageJson(scope, name, description, isPrivate)],
         [`README.md`, mergeREADME(scope, name, description)],
-        [`LICENSE`, mergeLicense(isPrivate, root)],
+        [`tsconfig.json`, identityTransform],
+        [`tslint.json`, identityTransform],
     ];
     files.forEach(([relativeFpath, transformer]) => copyOrModify(`${root}/${relativeFpath}`, `${pDir}/${relativeFpath}`, transformer));
     if (scope) {
@@ -80,7 +80,7 @@ function mergePackageJson(scope, name, description, isPrivate) {
             dst.config = src.config;
             dst.scripts = src.scripts;
             dst.scripts["dep-check"] = `"dependency-check . --no-dev",`;
-            dst.files = src.files.filter((x) => !x.match(/\.github/));
+            dst.files = ["dist", "docs"];
             delete dst.scripts.postintall;
             if (isPrivate) {
                 dst.license = "SEE LICENSE IN './LICENSE'";

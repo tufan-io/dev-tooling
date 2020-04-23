@@ -17,7 +17,13 @@
   "files": [
     "dist",
     "docs",
-    ".github"
+    ".github",
+    "tsconfig.json",
+    "tslint.json",
+    ".gitignore",
+    ".npmignore",
+    ".editorconfig",
+    ".vscode"
   ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

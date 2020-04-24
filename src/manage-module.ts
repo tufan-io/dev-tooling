@@ -94,7 +94,7 @@ function mergeREADME(scope: string, name: string, description: string) {
           match: /tufan-io/g,
           replace: scope,
         }, {
-          match: /dev-tooling/g,
+          match: /simple-ci/g,
           replace: name,
         }, {
           match: new RegExp("[TODO: Describe your module here]"),
@@ -114,7 +114,7 @@ function mergePackageJson(scope, name, description, isPrivate) {
   return (srcStr: string, dstStr: string, _dstFile: string) => {
     const src = JSON.parse(srcStr);
     const dst = JSON.parse(dstStr);
-    if (!("dev-tooling" in dst)) {
+    if (!("simple-ci" in dst)) {
       dst[`run-batch`] = src[`run-batch`];
       dst.name = name;
       dst.description = description;
@@ -139,10 +139,10 @@ function mergePackageJson(scope, name, description, isPrivate) {
         match: /tufan-io/g,
         replace: scope,
       }, {
-        match: /dev-tooling/g,
+        match: /simple-ci/g,
         replace: name,
       }]);
-      dst["dev-tooling"] = {
+      dst["simple-ci"] = {
         version: src.version,
       };
       return serialized;

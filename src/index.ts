@@ -6,7 +6,7 @@ import { questions } from "./questions";
 
 export function main(cwd = process.cwd()) {
   const { packageJson } = readPkgUp.sync({ cwd });
-  if (!("dev-tooling" in packageJson)) {
+  if (!("simple-ci" in packageJson)) {
     return prompt(questions(packageJson.name, packageJson.description))
       .then(({ pkgname, description, isPrivate }) => {
         const [scope, name] = [

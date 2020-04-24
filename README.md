@@ -1,6 +1,6 @@
-# @tufan-io/dev-tooling
+# @tufan-io/simple-ci
 
-[![Build status](https://tufan-io.github.io/dev-tooling/ci/badge/build.svg)](https://github.com/tufan-io/dev-tooling/actions)
+[![Build status](https://tufan-io.github.io/simple-ci/ci/badge/build.svg)](https://github.com/tufan-io/simple-ci/actions)
 
 Standardized development tooling for tufan.io (node.js) projects.
 
@@ -43,7 +43,7 @@ npm config set @tufan-io:registry https://npm.pkg.github.com/tufan-io
 
 Install the package
 ```bash
-npm install @tufan-io/dev-tooling --save-dev
+npm install @tufan-io/simple-ci --save-dev
 ```
 
 ## Development Tooling

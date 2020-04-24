@@ -1,23 +1,23 @@
 {
-  "name": "@tufan-io/dev-tooling",
+  "name": "@tufan-io/simple-ci",
   "version": "0.0.1",
   "private": false,
   "description": "",
   "keywords": [],
-  "homepage": "https://github.com/tufan-io/dev-tooling#readme",
+  "homepage": "https://github.com/tufan-io/simple-ci#readme",
   "bugs": {
-    "url": "https://github.com/tufan-io/dev-tooling/issues"
+    "url": "https://github.com/tufan-io/simple-ci/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tufan-io/dev-tooling.git"
+    "url": "git+https://github.com/tufan-io/simple-ci.git"
   },
   "license": "Apache-2.0",
   "author": "tufan.io",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "config-dev-tooling": "./dist/index.js"
+    "config-simple-ci": "./dist/index.js"
   },
   "directories": {
     "doc": "docs"

@@ -1,8 +1,8 @@
 
 export const input = [
-  "# @tufan/dev-tooling",
+  "# @tufan/simple-ci",
   "",
-  "[![Build status](https://tufan-io.github.io/dev-tooling/ci/badge/build.svg)](https://github.com/tufan-io/dev-tooling/actions)",
+  "[![Build status](https://tufan-io.github.io/simple-ci/ci/badge/build.svg)](https://github.com/tufan-io/simple-ci/actions)",
   "",
   "Standardized development tooling for tufan.io (node.js) projects.",
   "",
@@ -34,7 +34,7 @@ export const input = [
   "",
   "Install the package",
   "```bash",
-  "npm install @tufan-io/dev-tooling --save-dev",
+  "npm install @tufan-io/simple-ci --save-dev",
   "```",
   "",
   "## Development Tooling",

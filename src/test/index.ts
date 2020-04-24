@@ -6,5 +6,6 @@ import * as path from "path";
 import { main } from "../index";
 
 test(`main`, async (t) => {
+  // TODO: add proper test cases
   t.pass();
 });

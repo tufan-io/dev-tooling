@@ -132,12 +132,10 @@ function mergeSimpleCiYml(root, scope, isPrivate) {
     const simpleCi = (isPrivate)
         ? fs.readFileSync(`${root}/docs/PRIVATE-simple-ci.yml`, "utf8")
         : fs.readFileSync(`${root}/templates/.github/workflows/simple-ci.yml`, "utf8");
-    return (_src, _dst, _dstFile) => {
-        regexp_replacer_1.regexpReplacer(simpleCi, [{
-                match: /tufan-io/g,
-                replace: scope,
-            }]);
-    };
+    return (_src, _dst, _dstFile) => regexp_replacer_1.regexpReplacer(simpleCi, [{
+            match: /tufan-io/g,
+            replace: scope,
+        }]);
 }
 function spawn(cmd, args, opts = {}) {
     opts = {

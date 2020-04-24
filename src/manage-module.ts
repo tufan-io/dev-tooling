@@ -154,7 +154,7 @@ function mergePackageJson(scope, name, description, isPrivate) {
 function mergeSimpleCiYml(root: string, scope: string, isPrivate: boolean) {
   const simpleCi = (isPrivate)
     ? fs.readFileSync(`${root}/docs/PRIVATE-simple-ci.yml`, "utf8")
-    : fs.readFileSync(`${root}/.github/workflow/simpl-ci.yml`, "utf8");
+    : fs.readFileSync(`${root}/templates/.github/workflow/simpl-ci.yml`, "utf8");
   return (_src: string, _dst: string, _dstFile: string) =>
     regexpReplacer(simpleCi, [{
       match: /tufan-io/g,

@@ -19,13 +19,14 @@ npm install @tufan-io/simple-ci
 > TODO: Add API/Usage details here
 
 ## Development Tooling
+## Development Tooling
 - [Development tooling](docs/DevTools.md)
 - [CLOC reports](docs/cloc.md)
-- [TODOS](docs/TODOs)
+- [TODOS](docs/TODOs.md)
 - [Changelog](CHANGELOG.md)
 
 ## License
-[Apache-2.0](./LICENSE.md)
+[Apache-2.0](LICENSE.md)
 
 ## Code of Conduct
 This project is released with a [Contributor Code of Conduct](code-of-conduct.md).

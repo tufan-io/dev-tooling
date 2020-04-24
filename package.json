@@ -64,7 +64,7 @@
     "test": "cross-env NODE_ENV=test nyc -r lcov -r text-summary -r json-summary ava --verbose",
     "test-no-cover": "cross-env NODE_ENV=test ava --verbose",
     "todos": "leasot --exit-nicely --skip-unsupported ./src",
-    "todos-md": "leasot --exit-nicely --skip-unsupported --reporter markdown ./src> docs/TODO.md",
+    "todos-md": "leasot --exit-nicely --skip-unsupported --reporter markdown ./src> ./docs/TODOs.md",
     "upgrade_": "npm upgrade"
   },
   "husky": {

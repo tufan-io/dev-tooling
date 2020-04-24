@@ -52,13 +52,13 @@ possible display changes to be made, before actually making them. For the moment
 that is an aspirational goal.
 
 ## Development Tooling
-- [Development tooling](./docs/DevTools.md)
-- [CLOC reports](./docs/cloc.md)
-- [TODOS](./docs/TODOs)
-- [Changelog](./CHANGELOG.md)
+- [Development tooling](docs/DevTools.md)
+- [CLOC reports](docs/cloc.md)
+- [TODOS](docs/TODOs.md)
+- [Changelog](CHANGELOG.md)
 
 ## License
-[Apache-2.0](./LICENSE.md)
+[Apache-2.0](LICENSE.md)
 
 ## Code of Conduct
 Please note that this project is released with a [Contributor Code of Conduct](code-of-conduct.md). By participating in this project you agree to abide by its terms.

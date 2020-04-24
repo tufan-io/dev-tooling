@@ -4,6 +4,22 @@
 
 Standardized development tooling for tufan.io (node.js) projects.
 
+## Usage
+
+```bash
+# set registry config
+npm config set @tufan-io:registry https://npm.pkg.github.com/tufan-io
+
+# install the package
+npm install @tufan-io/simple-ci --save-dev
+
+# configure simple-ci -
+#  - an interactive prompt to seek minimal information
+#  - uses these answers to make modifications mentioned above
+npx config-simple-ci
+```
+
+## Why?
 `tufan.io` is a primarily TypeScript dev shop.
 The growing sophistication of tufan.io's development process, has resulted in an
 unexpected pain point - keeping the scores of modules in-sync as the individual
@@ -34,23 +50,6 @@ to the dependent module. Specifically:
 The post install script aims to be curteous and will seek permission, and where
 possible display changes to be made, before actually making them. For the moment,
 that is an aspirational goal.
-
-## Usage
-Set registry config
-```bash
-npm config set @tufan-io:registry https://npm.pkg.github.com/tufan-io
-```
-
-Install the package
-```bash
-npm install @tufan-io/simple-ci --save-dev
-```
-
-Configure simple-ci - uses answers from an interactive prompt to make modifications
-as described above.
-```bash
-npx config-simple-ci
-```
 
 ## Development Tooling
 - [Development tooling](./docs/DevTools.md)

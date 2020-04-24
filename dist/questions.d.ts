@@ -4,6 +4,7 @@ export declare const questions: (name: string, description: string) => ({
     message: string;
     default: string;
     format: (val: any) => any;
+    validate: (val: any) => boolean;
     choices?: undefined;
 } | {
     type: string;
@@ -11,6 +12,7 @@ export declare const questions: (name: string, description: string) => ({
     message: string;
     default: string;
     format?: undefined;
+    validate?: undefined;
     choices?: undefined;
 } | {
     type: string;
@@ -22,4 +24,5 @@ export declare const questions: (name: string, description: string) => ({
     }[];
     default: boolean;
     format?: undefined;
+    validate?: undefined;
 })[];

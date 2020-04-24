@@ -46,6 +46,12 @@ Install the package
 npm install @tufan-io/simple-ci --save-dev
 ```
 
+Configure simple-ci - uses answers from an interactive prompt to make modifications
+as described above.
+```bash
+npx config-simple-ci
+```
+
 ## Development Tooling
 - [Development tooling](./docs/DevTools.md)
 - [CLOC reports](./docs/cloc.md)

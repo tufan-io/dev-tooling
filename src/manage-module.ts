@@ -17,7 +17,7 @@ export function manageModule(scope, name, description, isPrivate, version, cwd =
     [`package.json`, `package.json`, mergePackageJson(scope, name, description, isPrivate, version)],
     [`docs/sample-README.md`, `README.md`, mergeREADME(scope, name, description)],
     [`templates/.editorconfig`, `.editorconfig`, identityTransform],
-    [`templates/.github/workflows/simple-ci.yml`, `.github/workflows/simple-ci.yml`, mergeSimpleCiYml(root, scope)],
+    [`templates/.github/workflows/action-ci.yml`, `.github/workflows/action-ci.yml`, mergeActionCiYml(root, scope)],
     [`templates/_gitignore`, `.gitignore`, identityTransform],
     [`templates/_npmignore`, `.npmignore`, identityTransform],
     [`templates/.vscode/launch.json`, `.vscode/launch.json`, identityTransform],
@@ -133,6 +133,9 @@ function mergePackageJson(scope, name, description, isPrivate, version) {
     if (isPrivate) {
       dst.license = "SEE LICENSE IN './LICENSE'";
     } else {
+      // setting private=true prevent the package from being published.
+      // setting private=false doesn't but improves the UX on the interactive prompt
+      dst.private = false;
       dst.license = "Apache-2.0";
     }
     dst.publishConfig = {
@@ -155,7 +158,7 @@ function mergePackageJson(scope, name, description, isPrivate, version) {
   };
 }
 
-function mergeSimpleCiYml(root: string, scope: string) {
+function mergeActionCiYml(root: string, scope: string) {
   return (src: string, _dst: string, _dstFile: string) =>
     regexpReplacer(src, [{
       match: /tufan-io/g,

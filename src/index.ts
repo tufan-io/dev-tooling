@@ -6,7 +6,7 @@ import { questions } from "./questions";
 
 export function main(cwd = process.cwd()) {
   const { packageJson } = readPkgUp.sync({ cwd });
-  return prompt(questions(packageJson.name, packageJson.description))
+  return prompt(questions(packageJson.name, packageJson.description, packageJson.private !== false))
     .then(({ pkgname, description, isPrivate }) => {
       const [scope, name] = [
         "tufan-io",

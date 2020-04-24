@@ -7,7 +7,7 @@ const manage_module_1 = require("./manage-module");
 const questions_1 = require("./questions");
 function main(cwd = process.cwd()) {
     const { packageJson } = readPkgUp.sync({ cwd });
-    return inquirer_1.prompt(questions_1.questions(packageJson.name, packageJson.description))
+    return inquirer_1.prompt(questions_1.questions(packageJson.name, packageJson.description, packageJson.private !== false))
         .then(({ pkgname, description, isPrivate }) => {
         const [scope, name] = [
             "tufan-io",

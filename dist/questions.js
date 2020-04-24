@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.questions = (name, description) => {
+exports.questions = (name, description, isPrivate) => {
     // tslint:disable: object-literal-sort-keys
     return [{
             type: "text",
@@ -24,7 +24,7 @@ exports.questions = (name, description) => {
                 { name: "true", value: true },
                 { name: "false", value: false },
             ],
-            default: true,
+            default: isPrivate,
         }];
 };
 //# sourceMappingURL=questions.js.map

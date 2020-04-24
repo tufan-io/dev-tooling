@@ -1,5 +1,5 @@
 
-export const questions = (name: string, description: string) => {
+export const questions = (name: string, description: string, isPrivate) => {
   // tslint:disable: object-literal-sort-keys
   return [{
     type: "text",
@@ -24,6 +24,6 @@ export const questions = (name: string, description: string) => {
       { name: "true", value: true },
       { name: "false", value: false },
     ],
-    default: true,
+    default: isPrivate,
   }];
 };

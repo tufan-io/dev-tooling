@@ -37,7 +37,7 @@ to the dependent module. Specifically:
 - code-of-conduct.md
 - tsconfig.json,
 - tslint.json,
-- .github/workflows/simple-ci.yml
+- .github/workflows/action-ci.yml
 - .gitignore
 - .npmignore
 - .npmrc

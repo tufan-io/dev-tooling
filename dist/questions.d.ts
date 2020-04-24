@@ -1,4 +1,4 @@
-export declare const questions: (name: string, description: string) => ({
+export declare const questions: (name: string, description: string, isPrivate: any) => ({
     type: string;
     name: string;
     message: string;
@@ -22,7 +22,7 @@ export declare const questions: (name: string, description: string) => ({
         name: string;
         value: boolean;
     }[];
-    default: boolean;
+    default: any;
     format?: undefined;
     validate?: undefined;
 })[];

@@ -2,21 +2,21 @@
 
 [![Build status](https://tufan-io.github.io/simple-ci/ci/badge/build.svg)](https://github.com/tufan-io/simple-ci/actions)
 
-[TODO: Describe your module here]
+> TODO: Describe your module here
 
 ## Installation
-Set registry config
-```bash
-npm config set @tufan-io:registry https://npm.pkg.github.com/tufan-io
-```
 
-Install the package
 ```bash
-npm install @tufan-io/simple-ci --save-dev
+# set registry config
+npm config set @tufan-io:registry https://npm.pkg.github.com/tufan-io
+
+# install the package
+npm install @tufan-io/simple-ci
 ```
 
 ## API/Usage
-[ TODO: Add API/Usage details here]
+
+> TODO: Add API/Usage details here
 
 ## Development Tooling
 - [Development tooling](docs/DevTools.md)

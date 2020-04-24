@@ -4,7 +4,7 @@ export declare const questions: (name: string, description: string) => ({
     message: string;
     default: string;
     format: (val: any) => any;
-    validate: (val: any) => boolean;
+    validate: (val: any) => true | "Module names should be of form '@scope/name'";
     choices?: undefined;
 } | {
     type: string;

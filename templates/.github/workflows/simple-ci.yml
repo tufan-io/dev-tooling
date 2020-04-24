@@ -32,5 +32,8 @@ jobs:
       # npm-check has dependencies with vulnerabilities.
       - run: npm i npm-check -g
       - run: npm --version
+      - run: git config --global url."https://${{secrets.ACTION_CI}}@github.com".insteadOf ssh://git@github.com
       - run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.ACTION_CI}}
       - run: npm run build

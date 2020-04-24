@@ -9,6 +9,8 @@ exports.questions = (name, description) => {
             default: name,
             format: (val) => !!val && val.test("/") && val[0] !== "@" ? `@${val}` : val,
             validate: (val) => !!val.match(/^@.*\/.*/)
+                ? true
+                : "Module names should be of form '@scope/name'",
         }, {
             type: "text",
             name: "description",

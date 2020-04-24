@@ -21,7 +21,11 @@ function main(cwd = process.cwd()) {
 exports.main = main;
 if (!module.parent) {
     process.on("SIGINT", () => process.exit(-1));
-    // tslint:disable-next-line: no-console
-    main(process.cwd()).then(console.log).catch(console.error);
+    // tslint:disable: no-console
+    main(process.cwd())
+        .then(() => {
+        console.log(`\nSuccessfully configured 'simple-ci'. To finish, execute\n  npm run build`);
+    })
+        .catch(console.error);
 }
 //# sourceMappingURL=index.js.map

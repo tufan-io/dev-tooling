@@ -13,27 +13,25 @@ function manageModule(scope, name, description, isPrivate, cwd = process.cwd()) 
         return;
     }
     const files = [
-        [`docs/DevTools.md`, identityTransform],
-        [`LICENSE`, mergeLicense(isPrivate, root)],
-        [`package.json`, mergePackageJson(scope, name, description, isPrivate)],
-        [`README.md`, mergeREADME(scope, name, description)],
-        [`templates/.editorconfig`, identityTransform],
-        [`templates/.github/workflows/simple-ci.yml`, mergeSimpleCiYml(root, scope, isPrivate)],
-        [`templates/_gitignore`, identityTransform],
-        [`templates/_npmignore`, identityTransform],
-        [`templates/.vscode/launch.json`, identityTransform],
-        [`templates/.vscode/settings.json`, identityTransform],
-        [`templates/.vscode/tasks.json`, identityTransform],
-        [`templates/code-of-conduct.md`, identityTransform],
-        [`templates/tsconfig.json`, identityTransform],
-        [`templates/tslint.json`, identityTransform],
+        [`docs/DevTools.md`, `docs/DevTools.md`, identityTransform],
+        [`LICENSE`, `LICENSE`, mergeLicense(isPrivate, root)],
+        [`package.json`, `package.json`, mergePackageJson(scope, name, description, isPrivate)],
+        [`docs/sample-README.md`, `README.md`, mergeREADME(scope, name, description)],
+        [`templates/.editorconfig`, `.editorconfig`, identityTransform],
+        [`templates/.github/workflows/simple-ci.yml`, `.github/workflows/simple-ci.yml`, mergeSimpleCiYml(root, scope)],
+        [`templates/_gitignore`, `.gitignore`, identityTransform],
+        [`templates/_npmignore`, `.npmignore`, identityTransform],
+        [`templates/.vscode/launch.json`, `.vscode/launch.json`, identityTransform],
+        [`templates/.vscode/settings.json`, `.vscode/settings.json`, identityTransform],
+        [`templates/.vscode/tasks.json`, `.vscode/tasks.json`, identityTransform],
+        [`templates/code-of-conduct.md`, `code-of-conduct.md`, identityTransform],
+        [`templates/tsconfig.json`, `tsconfig.json`, identityTransform],
+        [`templates/tslint.json`, `tslint.json`, identityTransform],
     ];
-    files.forEach(([relativeFpath, transformer]) => {
-        const srcPath = `${root}/${relativeFpath}`;
-        const dstPath = relativeFpath.replace("templates/", "").replace("_gitignore", ".gitignore").replace("_npmignore", ".npmignore");
+    files.forEach(([srcPath, dstPath, transformer]) => {
         // tslint:disable-next-line: no-console
         console.log(`Updating ${dstPath}`);
-        copyOrModify(`${srcPath}`, `${pDir}/${dstPath}`, transformer);
+        copyOrModify(`${root}/${srcPath}`, `${pDir}/${dstPath}`, transformer);
     });
     if (scope) {
         cp.spawn("npm", `config set @${scope}:registry https://npm.pkg.github.com/$scope`.split(" "), { cwd: pDir });
@@ -73,19 +71,28 @@ function copyOrModify(srcPath, dstPath, transformer) {
     fs.writeFileSync(dstPath, dst, "utf8");
 }
 function mergeREADME(scope, name, description) {
+    const replacers = !!description
+        ? [{
+                match: /tufan-io/g,
+                replace: scope,
+            }, {
+                match: /simple-ci/g,
+                replace: name,
+            }, {
+                match: new RegExp("> TODO: Describe your module here"),
+                replace: description,
+            }]
+        : [{
+                match: /tufan-io/g,
+                replace: scope,
+            }, {
+                match: /simple-ci/g,
+                replace: name,
+            }];
     return (src, dst, _dstFile) => {
         return !!dst
             ? dst
-            : regexp_replacer_1.regexpReplacer(src, [{
-                    match: /tufan-io/g,
-                    replace: scope,
-                }, {
-                    match: /simple-ci/g,
-                    replace: name,
-                }, {
-                    match: new RegExp("[TODO: Describe your module here]"),
-                    replace: description,
-                }]);
+            : regexp_replacer_1.regexpReplacer(src, replacers);
     };
 }
 function mergeLicense(isPrivate, root) {
@@ -133,11 +140,8 @@ function mergePackageJson(scope, name, description, isPrivate) {
         // possibly deal with version upgrades here.
     };
 }
-function mergeSimpleCiYml(root, scope, isPrivate) {
-    const simpleCi = (isPrivate)
-        ? fs.readFileSync(`${root}/docs/PRIVATE-simple-ci.yml`, "utf8")
-        : fs.readFileSync(`${root}/templates/.github/workflows/simple-ci.yml`, "utf8");
-    return (_src, _dst, _dstFile) => regexp_replacer_1.regexpReplacer(simpleCi, [{
+function mergeSimpleCiYml(root, scope) {
+    return (src, _dst, _dstFile) => regexp_replacer_1.regexpReplacer(src, [{
             match: /tufan-io/g,
             replace: scope,
         }]);

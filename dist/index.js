@@ -21,6 +21,7 @@ function main(cwd = process.cwd()) {
 exports.main = main;
 if (!module.parent) {
     process.on("SIGINT", () => process.exit(-1));
+    // tslint:disable-next-line: no-console
     main(process.cwd()).then(console.log).catch(console.error);
 }
 //# sourceMappingURL=index.js.map

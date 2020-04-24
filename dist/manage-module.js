@@ -31,6 +31,7 @@ function manageModule(scope, name, description, isPrivate, cwd = process.cwd()) 
     files.forEach(([relativeFpath, transformer]) => {
         const srcPath = `${root}/${relativeFpath}`;
         const dstPath = relativeFpath.replace("templates/", "").replace("_gitignore", ".gitignore").replace("_npmignore", ".npmignore");
+        // tslint:disable-next-line: no-console
         console.log(`Updating ${dstPath}`);
         copyOrModify(`${srcPath}`, `${pDir}/${dstPath}`, transformer);
     });
@@ -55,12 +56,14 @@ function manageModule(scope, name, description, isPrivate, cwd = process.cwd()) 
                 "",
             ].join("\n"),
         };
+        // tslint:disable: tsr-detect-non-literal-fs-filename
         fs.writeFileSync(`${pDir}/src/index.ts`, sample.src, "utf8");
         fs.writeFileSync(`${pDir}/src/test/index.ts`, sample.test, "utf8");
     }
 }
 exports.manageModule = manageModule;
 function copyOrModify(srcPath, dstPath, transformer) {
+    // tslint:disable: tsr-detect-non-literal-fs-filename
     if (!fs.statSync(srcPath).isFile()) {
         throw new Error(`copyOnModify only supports copying files`);
     }
@@ -103,7 +106,7 @@ function mergePackageJson(scope, name, description, isPrivate) {
         dst.ava = src.ava;
         dst.nyc = src.nyc;
         dst.husky = src.husky;
-        dst.config = src.config;
+        dst.config = src.config; // commitzen
         dst.scripts = src.scripts;
         dst.scripts["dep-check"] = "dependency-check . --no-dev";
         dst.files = ["dist", "docs"];
@@ -115,6 +118,7 @@ function mergePackageJson(scope, name, description, isPrivate) {
             dst.license = "Apache-2.0";
         }
         const serialized = JSON.stringify(dst, null, 2);
+        // this changes any git urls embedded in package.json
         regexp_replacer_1.regexpReplacer(serialized, [{
                 match: /tufan-io/g,
                 replace: scope,
@@ -126,6 +130,7 @@ function mergePackageJson(scope, name, description, isPrivate) {
             version: src.version,
         };
         return serialized;
+        // possibly deal with version upgrades here.
     };
 }
 function mergeSimpleCiYml(root, scope, isPrivate) {
@@ -143,6 +148,7 @@ function spawn(cmd, args, opts = {}) {
         stdio: "inherit",
         ...opts,
     };
+    // tslint:disable-next-line: no-console
     console.log([cmd].concat(args).join(" "));
     return cp.spawnSync(cmd, args, opts);
 }

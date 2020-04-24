@@ -41,6 +41,17 @@ const remark = Remark()
 function parse(input) {
     return removePositionals(remark.parse(input));
 }
+/**
+ * findAndReplace "searchFor" with "replaceWith" in "source".
+ * This is an quick hack, so matcher is a bit dumb. To make
+ * things work, it's best to use to the smallest possible
+ * snippet of text to replace. Specifically, it's best to use
+ * not use list items, unless the whole list is being replaced.
+ *
+ * @param source  the markdown string to operate upon
+ * @param searchFor  the markdown snippet to searchFor
+ * @param replaceWith  the markdown snippet to replaceWith
+ */
 function markdownReplacer(source, searchFor, replaceWith) {
     const newAst = findAndReplace(parse(source), parse(searchFor).children, parse(replaceWith).children);
     return remark.stringify(newAst);

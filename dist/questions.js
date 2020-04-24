@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.questions = (name, description) => {
+    // tslint:disable: object-literal-sort-keys
     return [{
             type: "text",
             name: "pkgname",

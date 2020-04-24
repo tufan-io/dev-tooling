@@ -5,7 +5,7 @@ import pkgDir from "pkg-dir";
 import { regexpReplacer } from "./regexp-replacer";
 
 const identityTransform = (src: string, _dst: string, _dstFile: string) => src;
-export function manageModule(scope, name, description, isPrivate, cwd = process.cwd()) {
+export function manageModule(scope, name, description, isPrivate, version, cwd = process.cwd()) {
   const pDir = pkgDir.sync(cwd);
   const root = path.resolve(`${__dirname}/..`);
   if (pDir === root) {
@@ -14,7 +14,7 @@ export function manageModule(scope, name, description, isPrivate, cwd = process.
   const files = [
     [`docs/DevTools.md`, `docs/DevTools.md`, identityTransform],
     [`LICENSE`, `LICENSE`, mergeLicense(isPrivate, root)],
-    [`package.json`, `package.json`, mergePackageJson(scope, name, description, isPrivate)],
+    [`package.json`, `package.json`, mergePackageJson(scope, name, description, isPrivate, version)],
     [`docs/sample-README.md`, `README.md`, mergeREADME(scope, name, description)],
     [`templates/.editorconfig`, `.editorconfig`, identityTransform],
     [`templates/.github/workflows/simple-ci.yml`, `.github/workflows/simple-ci.yml`, mergeSimpleCiYml(root, scope)],
@@ -113,7 +113,7 @@ function mergeLicense(isPrivate: boolean, root: string) {
   return (_src: string, _dst: string, _dstFile: string) => license;
 }
 
-function mergePackageJson(scope, name, description, isPrivate) {
+function mergePackageJson(scope, name, description, isPrivate, version) {
   return (srcStr: string, dstStr: string, _dstFile: string) => {
     const src = JSON.parse(srcStr);
     const dst = JSON.parse(dstStr);
@@ -135,8 +135,14 @@ function mergePackageJson(scope, name, description, isPrivate) {
     } else {
       dst.license = "Apache-2.0";
     }
-    const serialized = JSON.stringify(dst, null, 2);
+    dst.publishConfig = {
+      "registry": "https://npm.pkg.github.com/",
+    };
+    dst["simple-ci"] = {
+      version,
+    };
     // this changes any git urls embedded in package.json
+    const serialized = JSON.stringify(dst, null, 2);
     regexpReplacer(serialized, [{
       match: /tufan-io/g,
       replace: scope,
@@ -144,9 +150,6 @@ function mergePackageJson(scope, name, description, isPrivate) {
       match: /simple-ci/g,
       replace: name,
     }]);
-    dst["simple-ci"] = {
-      version: src.version,
-    };
     return serialized;
     // possibly deal with version upgrades here.
   };

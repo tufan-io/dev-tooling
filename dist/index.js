@@ -13,7 +13,7 @@ function main(cwd = process.cwd()) {
             "tufan-io",
             ...pkgname.replace(/^@/, "").split("/"),
         ].slice(-2);
-        return manage_module_1.manageModule(scope, name, description, isPrivate, packageJson.version, cwd);
+        return manage_module_1.manageModule(scope, name, description, isPrivate, cwd);
     });
 }
 exports.main = main;

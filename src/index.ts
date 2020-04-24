@@ -12,7 +12,7 @@ export function main(cwd = process.cwd()) {
         "tufan-io",
         ...(pkgname as string).replace(/^@/, "").split("/"),
       ].slice(-2);
-      return manageModule(scope, name, description, isPrivate, packageJson.version, cwd);
+      return manageModule(scope, name, description, isPrivate, cwd);
     });
 }
 

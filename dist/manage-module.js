@@ -4,10 +4,13 @@ const cp = require("child_process");
 const fs = require("fs-extra");
 const path = require("path");
 const pkg_dir_1 = require("pkg-dir");
+const readPkgUp = require("read-pkg-up");
 const regexp_replacer_1 = require("./regexp-replacer");
 const identityTransform = (src, _dst, _dstFile) => src;
-function manageModule(scope, name, description, isPrivate, version, cwd = process.cwd()) {
+function manageModule(scope, name, description, isPrivate, cwd = process.cwd()) {
     const pDir = pkg_dir_1.default.sync(cwd);
+    // get simple-ci version
+    const { packageJson: { version } } = readPkgUp.sync({ cwd: __dirname });
     const root = path.resolve(`${__dirname}/..`);
     if (pDir === root) {
         return;

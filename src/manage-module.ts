@@ -2,11 +2,15 @@ import * as cp from "child_process";
 import * as fs from "fs-extra";
 import * as path from "path";
 import pkgDir from "pkg-dir";
+import * as readPkgUp from "read-pkg-up";
 import { regexpReplacer } from "./regexp-replacer";
 
 const identityTransform = (src: string, _dst: string, _dstFile: string) => src;
-export function manageModule(scope, name, description, isPrivate, version, cwd = process.cwd()) {
+export function manageModule(scope, name, description, isPrivate, cwd = process.cwd()) {
   const pDir = pkgDir.sync(cwd);
+  // get simple-ci version
+  const { packageJson: { version } } = readPkgUp.sync({ cwd: __dirname });
+
   const root = path.resolve(`${__dirname}/..`);
   if (pDir === root) {
     return;

@@ -17,7 +17,7 @@ export function manageModule(scope, name, description, isPrivate, cwd = process.
     [`package.json`, mergePackageJson(scope, name, description, isPrivate)],
     [`README.md`, mergeREADME(scope, name, description)],
     [`templates/.editorconfig`, identityTransform],
-    [`templates/.github/workflows/simple-ci.yml`, identityTransform],
+    [`templates/.github/workflows/simple-ci.yml`, mergeSimpleCiYml(root, scope, isPrivate)],
     [`templates/_gitignore`, identityTransform],
     [`templates/_npmignore`, identityTransform],
     [`templates/.vscode/launch.json`, identityTransform],
@@ -149,6 +149,17 @@ function mergePackageJson(scope, name, description, isPrivate) {
     }
     // possibly deal with version upgrades here.
   };
+}
+
+function mergeSimpleCiYml(root: string, scope: string, isPrivate: boolean) {
+  const simpleCi = (isPrivate)
+    ? fs.readFileSync(`${root}/docs/PRIVATE-simple-ci.yml`, "utf8")
+    : fs.readFileSync(`${root}/.github/workflow/simpl-ci.yml`, "utf8");
+  return (_src: string, _dst: string, _dstFile: string) =>
+    regexpReplacer(simpleCi, [{
+      match: /tufan-io/g,
+      replace: scope,
+    }]);
 }
 
 function spawn(cmd: string, args: string[], opts: object = {}) {

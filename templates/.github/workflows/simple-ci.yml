@@ -25,6 +25,9 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
+          always-auth: true
+          registry-url: https://npm.pkg.github.com
+          scope: '@tufan-io'
       - run: node --version
       # npm-check has dependencies with vulnerabilities.
       - run: npm i npm-check -g

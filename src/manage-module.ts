@@ -121,7 +121,7 @@ function mergePackageJson(scope, name, description, isPrivate) {
     dst.husky = src.husky;
     dst.config = src.config; // commitzen
     dst.scripts = src.scripts;
-    dst.scripts["dep-check"] = `"dependency-check . --no-dev",`;
+    dst.scripts["dep-check"] = "dependency-check . --no-dev";
     dst.files = ["dist", "docs"];
     delete dst.scripts.postintall;
     if (isPrivate) {

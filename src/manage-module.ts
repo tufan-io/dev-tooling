@@ -28,17 +28,14 @@ export function manageModule(scope, name, description, isPrivate, cwd = process.
     [`templates/tslint.json`, identityTransform],
   ];
   files.forEach(([relativeFpath, transformer]: [string, any]) => {
+    const srcPath = `${root}/${relativeFpath}`;
+    const dstPath = relativeFpath.replace("templates/", "").replace("_gitignore", ".gitignore").replace("_npmignore", ".npmignore");
     // tslint:disable-next-line: no-console
-    console.log(`${root}/${relativeFpath} -> ${pDir}/${relativeFpath.replace("templates/", "")}`);
-    copyOrModify(
-      `${root}/${relativeFpath}`,
-      `${pDir}/${relativeFpath.replace("templates/", "")}`,
-      transformer);
-  })
-  fs.moveSync(`${pDir}/_gitignore`, `${pDir}/.gitignore`);
-  fs.moveSync(`${pDir}/_npmignore`, `${pDir}/.npmignore`)
+    console.log(`Updating ${dstPath}`);
+    copyOrModify(`${srcPath}`, `${pDir}/${dstPath}`, transformer);
+  });
   if (scope) {
-    spawn(
+    cp.spawn(
       "npm",
       `config set @${scope}:registry https://npm.pkg.github.com/$scope`.split(" "),
       { cwd: pDir });
@@ -114,39 +111,37 @@ function mergePackageJson(scope, name, description, isPrivate) {
   return (srcStr: string, dstStr: string, _dstFile: string) => {
     const src = JSON.parse(srcStr);
     const dst = JSON.parse(dstStr);
-    if (!("simple-ci" in dst)) {
-      dst[`run-batch`] = src[`run-batch`];
-      dst.name = name;
-      dst.description = description;
-      dst.engines = src.engines;
-      dst.publishConfig = src.publishConfig;
-      dst.ava = src.ava;
-      dst.nyc = src.nyc;
-      dst.husky = src.husky;
-      dst.config = src.config; // commitzen
-      dst.scripts = src.scripts;
-      dst.scripts["dep-check"] = `"dependency-check . --no-dev",`;
-      dst.files = ["dist", "docs"];
-      delete dst.scripts.postintall;
-      if (isPrivate) {
-        dst.license = "SEE LICENSE IN './LICENSE'";
-      } else {
-        dst.license = "Apache-2.0";
-      }
-      const serialized = JSON.stringify(dst, null, 2);
-      // this changes any git urls embedded in package.json
-      regexpReplacer(serialized, [{
-        match: /tufan-io/g,
-        replace: scope,
-      }, {
-        match: /simple-ci/g,
-        replace: name,
-      }]);
-      dst["simple-ci"] = {
-        version: src.version,
-      };
-      return serialized;
+    dst[`run-batch`] = src[`run-batch`];
+    dst.name = `@${scope}/${name}`;
+    dst.description = description;
+    dst.engines = src.engines;
+    dst.publishConfig = src.publishConfig;
+    dst.ava = src.ava;
+    dst.nyc = src.nyc;
+    dst.husky = src.husky;
+    dst.config = src.config; // commitzen
+    dst.scripts = src.scripts;
+    dst.scripts["dep-check"] = `"dependency-check . --no-dev",`;
+    dst.files = ["dist", "docs"];
+    delete dst.scripts.postintall;
+    if (isPrivate) {
+      dst.license = "SEE LICENSE IN './LICENSE'";
+    } else {
+      dst.license = "Apache-2.0";
     }
+    const serialized = JSON.stringify(dst, null, 2);
+    // this changes any git urls embedded in package.json
+    regexpReplacer(serialized, [{
+      match: /tufan-io/g,
+      replace: scope,
+    }, {
+      match: /simple-ci/g,
+      replace: name,
+    }]);
+    dst["simple-ci"] = {
+      version: src.version,
+    };
+    return serialized;
     // possibly deal with version upgrades here.
   };
 }
@@ -154,12 +149,13 @@ function mergePackageJson(scope, name, description, isPrivate) {
 function mergeSimpleCiYml(root: string, scope: string, isPrivate: boolean) {
   const simpleCi = (isPrivate)
     ? fs.readFileSync(`${root}/docs/PRIVATE-simple-ci.yml`, "utf8")
-    : fs.readFileSync(`${root}/templates/.github/workflow/simpl-ci.yml`, "utf8");
-  return (_src: string, _dst: string, _dstFile: string) =>
+    : fs.readFileSync(`${root}/templates/.github/workflows/simple-ci.yml`, "utf8");
+  return (_src: string, _dst: string, _dstFile: string) => {
     regexpReplacer(simpleCi, [{
       match: /tufan-io/g,
       replace: scope,
     }]);
+  }
 }
 
 function spawn(cmd: string, args: string[], opts: object = {}) {

@@ -29,13 +29,13 @@ function manageModule(scope, name, description, isPrivate, cwd = process.cwd()) 
         [`templates/tslint.json`, identityTransform],
     ];
     files.forEach(([relativeFpath, transformer]) => {
-        console.log(`${root}/${relativeFpath} -> ${pDir}/${relativeFpath.replace("templates/", "")}`);
-        copyOrModify(`${root}/${relativeFpath}`, `${pDir}/${relativeFpath.replace("templates/", "")}`, transformer);
+        const srcPath = `${root}/${relativeFpath}`;
+        const dstPath = relativeFpath.replace("templates/", "").replace("_gitignore", ".gitignore").replace("_npmignore", ".npmignore");
+        console.log(`Updating ${dstPath}`);
+        copyOrModify(`${srcPath}`, `${pDir}/${dstPath}`, transformer);
     });
-    fs.moveSync(`${pDir}/_gitignore`, `${pDir}/.gitignore`);
-    fs.moveSync(`${pDir}/_npmignore`, `${pDir}/.npmignore`);
     if (scope) {
-        spawn("npm", `config set @${scope}:registry https://npm.pkg.github.com/$scope`.split(" "), { cwd: pDir });
+        cp.spawn("npm", `config set @${scope}:registry https://npm.pkg.github.com/$scope`.split(" "), { cwd: pDir });
     }
     if (!fs.pathExistsSync(`${pDir}/src`)) {
         fs.ensureDirSync(`${pDir}/src/test`);
@@ -95,49 +95,49 @@ function mergePackageJson(scope, name, description, isPrivate) {
     return (srcStr, dstStr, _dstFile) => {
         const src = JSON.parse(srcStr);
         const dst = JSON.parse(dstStr);
-        if (!("simple-ci" in dst)) {
-            dst[`run-batch`] = src[`run-batch`];
-            dst.name = name;
-            dst.description = description;
-            dst.engines = src.engines;
-            dst.publishConfig = src.publishConfig;
-            dst.ava = src.ava;
-            dst.nyc = src.nyc;
-            dst.husky = src.husky;
-            dst.config = src.config;
-            dst.scripts = src.scripts;
-            dst.scripts["dep-check"] = `"dependency-check . --no-dev",`;
-            dst.files = ["dist", "docs"];
-            delete dst.scripts.postintall;
-            if (isPrivate) {
-                dst.license = "SEE LICENSE IN './LICENSE'";
-            }
-            else {
-                dst.license = "Apache-2.0";
-            }
-            const serialized = JSON.stringify(dst, null, 2);
-            regexp_replacer_1.regexpReplacer(serialized, [{
-                    match: /tufan-io/g,
-                    replace: scope,
-                }, {
-                    match: /simple-ci/g,
-                    replace: name,
-                }]);
-            dst["simple-ci"] = {
-                version: src.version,
-            };
-            return serialized;
+        dst[`run-batch`] = src[`run-batch`];
+        dst.name = `@${scope}/${name}`;
+        dst.description = description;
+        dst.engines = src.engines;
+        dst.publishConfig = src.publishConfig;
+        dst.ava = src.ava;
+        dst.nyc = src.nyc;
+        dst.husky = src.husky;
+        dst.config = src.config;
+        dst.scripts = src.scripts;
+        dst.scripts["dep-check"] = `"dependency-check . --no-dev",`;
+        dst.files = ["dist", "docs"];
+        delete dst.scripts.postintall;
+        if (isPrivate) {
+            dst.license = "SEE LICENSE IN './LICENSE'";
         }
+        else {
+            dst.license = "Apache-2.0";
+        }
+        const serialized = JSON.stringify(dst, null, 2);
+        regexp_replacer_1.regexpReplacer(serialized, [{
+                match: /tufan-io/g,
+                replace: scope,
+            }, {
+                match: /simple-ci/g,
+                replace: name,
+            }]);
+        dst["simple-ci"] = {
+            version: src.version,
+        };
+        return serialized;
     };
 }
 function mergeSimpleCiYml(root, scope, isPrivate) {
     const simpleCi = (isPrivate)
         ? fs.readFileSync(`${root}/docs/PRIVATE-simple-ci.yml`, "utf8")
-        : fs.readFileSync(`${root}/templates/.github/workflow/simpl-ci.yml`, "utf8");
-    return (_src, _dst, _dstFile) => regexp_replacer_1.regexpReplacer(simpleCi, [{
-            match: /tufan-io/g,
-            replace: scope,
-        }]);
+        : fs.readFileSync(`${root}/templates/.github/workflows/simple-ci.yml`, "utf8");
+    return (_src, _dst, _dstFile) => {
+        regexp_replacer_1.regexpReplacer(simpleCi, [{
+                match: /tufan-io/g,
+                replace: scope,
+            }]);
+    };
 }
 function spawn(cmd, args, opts = {}) {
     opts = {

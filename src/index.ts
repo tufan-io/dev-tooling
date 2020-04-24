@@ -11,7 +11,7 @@ export function main(cwd = process.cwd()) {
       .then(({ pkgname, description, isPrivate }) => {
         const [scope, name] = [
           "tufan-io",
-          ...(pkgname as string).split("/"),
+          ...(pkgname as string).replace(/^@/, "").split("/"),
         ].slice(-2);
         return manageModule(scope, name, description, isPrivate, cwd);
       });

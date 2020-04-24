@@ -4,7 +4,7 @@ on:
       - '*'
       - '!gh-pages/*'
       - '!releases/*'
-name: simple-ci
+name: action-ci
 
 jobs:
   matrix-build:

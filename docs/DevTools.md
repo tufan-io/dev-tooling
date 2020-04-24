@@ -63,35 +63,49 @@ a simple pipeline of tasks to perform for each build step.
     lint        : runs tslint, to find common formatting errors and then some
     test        : runs tests with coverage on generated JavaScript
 
+### Publishing a module
+
+Publishing a module is a five step process.
+```bash
+# 1. make changes, build, test and commit
+# 2. pick semver version to bump to
+npm version patch|minor|major
+# 3. push commits including version bump
+git push
+# 4. push tags (created in #2)
+git push origin --tags
+# 5. publish the package
+npm publish
+```
+
+Eventually, we'll create a github workflow to trigger automatically.
+For now, we do this manually, from a developer machine.
+
 ## Project Structure
 
-The directory structure of a typical project:
+Typical project structure (source directory is prescriptive). All these are
+committed to the git repo. By design, the dist directory is committed.
+This allows using git urls as installation targets when needed.
 
-    ├── LICENSE
-    ├── README.md
-    ├── package.json
-    ├── scripts/              - post install scripts
+```
+    ├── .github/
+    ├── .vscode/
+    ├── dist/                 - compiled output
+    ├── docs/                 - reports & documentation
     ├── src/                  - module source (TypeScript)
-    │   ├── test/
-    │   │   └── specs/
-    │   │       └── index.ts
-    │   └── index.ts
-    ├── docs/                 - module documentation
-    ├── tsconfig.dist.json    - production tsconfig
-    ├── tsconfig.json         - development tsconfig
-    └── tslint.json           - tslint
-
-In addition, these directories are auto-created by the various scripts.
-The coverage & build directories are .gitignored.
-By design, dist directories are commited to the repo. For components
-with non-native dependencies, which is a vast majority of the cases,
-this is an advantage, since it minimizes the module size for download
-and makes the build setup a lot simpler.
-
-If your module includes native/compiled artifacts, this might need to be
-reconsidered.
-
-    ├── coverage/
-    |   └── typescript/
-    |       └── index.html    - html report of typescript
-    └── dist/                 - Commmitted to repo. Minimizes package size
+    │   ├── test/             - (skipped for coverage computation)
+    │   │   ├── fixtures/     - fixtures for test
+    │   │   ├── fixtures/     - helper code for writing tests
+    │   │   └── index.ts      - test file (ava.js)
+    │   ├── utils/            - utils needed by module source
+    │   └── index.ts          - source file
+    ├── .editorconfig
+    ├── .gitignore
+    ├── .npmignore
+    ├── code-of-conduct.md
+    ├── LICENSE
+    ├── package.json
+    ├── README.md
+    ├── tsconfig.json
+    └── tslint.json
+```

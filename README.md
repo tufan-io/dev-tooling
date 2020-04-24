@@ -1,6 +1,6 @@
 # @tufan-io/simple-ci
 
-[![build](https://github.com/tufan-io/simple-ci/workflows/simple-ci/badge.svg)](https://github.com/tufan-io/simple-ci/actions)
+[![build](https://github.com/tufan-io/action-ci/workflows/action-ci/badge.svg)](https://github.com/tufan-io/action-ci/actions)
 
 Standardized development tooling for tufan.io (node.js) projects.
 

@@ -1,6 +1,6 @@
 # @tufan/simple-ci
 
-[![build](https://github.com/tufan-io/simple-ci/workflows/simple-ci/badge.svg)](https://github.com/tufan-io/simple-ci/actions)
+[![build](https://github.com/tufan-io/action-ci/workflows/action-ci/badge.svg)](https://github.com/tufan-io/action-ci/actions)
 
 > TODO: Describe your module here
 

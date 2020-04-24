@@ -48,14 +48,15 @@ export function manageModule(scope, name, description, isPrivate, cwd = process.
     const sample = {
       src: [
         "export function main() {",
-        "  console.log(\"tufan.io wishes you have an awesome day!\");",
+        "  return \"tufan.io wishes you have an awesome day!\";",
         "}",
         "",
       ].join("\n"),
       test: [
         "import test from \"ava\";",
+        "import { main } from \"../index\";",
         "test(\"simple\", async (t) => {",
-        "  t.pass();",
+        "  t.snapshot(main());",
         "});",
         "",
       ].join("\n"),

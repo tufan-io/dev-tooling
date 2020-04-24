@@ -30,7 +30,7 @@
   "scripts": {
     "build": "npm-run-batch",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "check-coverage": "nyc check-coverage",
+    "check-coverage": "nyc check-coverage -x .tmp",
     "check-run-scripts": "run-batch",
     "checks": "run-batch",
     "clean": "rimraf dist .nyc_output coverage *.tsbuildinfo",
@@ -90,7 +90,7 @@
     "exclude": [
       "**/test/**",
       "**/helpers/**",
-      ".tmp"
+      ".tmp/**"
     ],
     "extension": [
       ".ts",

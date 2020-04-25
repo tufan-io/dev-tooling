@@ -3,10 +3,10 @@ cloc|github.com/AlDanial/cloc v 1.85
 
 File|blank|comment|code
 :-------|-------:|-------:|-------:
-./src/manage-module.ts|8|11|165
+./src/manage-module.ts|8|11|166
 ./src/markdown-replacer.ts|5|11|52
 ./src/questions.ts|1|2|48
 ./src/index.ts|2|1|24
 ./src/regexp-replacer.ts|1|0|9
 --------|--------|--------|--------
-SUM:|17|25|298
+SUM:|17|25|299

@@ -6,7 +6,7 @@ import * as readPkgUp from "read-pkg-up";
 import { regexpReplacer } from "./regexp-replacer";
 
 const identityTransform = (src: string, _dst: string, _dstFile: string) => src;
-export function manageModule(scope, name, description, isPrivate, cwd = process.cwd()) {
+export function manageModule(scope, name, description, isPrivate, registry, cwd = process.cwd()) {
   const pDir = pkgDir.sync(cwd);
   // get simple-ci version
   const { packageJson: { version } } = readPkgUp.sync({ cwd: __dirname });
@@ -18,7 +18,7 @@ export function manageModule(scope, name, description, isPrivate, cwd = process.
   const files = [
     [`docs/DevTools.md`, `docs/DevTools.md`, identityTransform],
     [`LICENSE`, `LICENSE`, mergeLicense(isPrivate, root)],
-    [`package.json`, `package.json`, mergePackageJson(scope, name, description, isPrivate, version)],
+    [`package.json`, `package.json`, mergePackageJson(scope, name, description, isPrivate, registry, version)],
     [`docs/sample-README.md`, `README.md`, mergeREADME(scope, name, description)],
     [`templates/.editorconfig`, `.editorconfig`, identityTransform],
     [`templates/.github/workflows/action-ci.yml`, `.github/workflows/action-ci.yml`, mergeActionCiYml(root, scope)],
@@ -27,7 +27,7 @@ export function manageModule(scope, name, description, isPrivate, cwd = process.
     [`templates/.vscode/launch.json`, `.vscode/launch.json`, identityTransform],
     [`templates/.vscode/settings.json`, `.vscode/settings.json`, identityTransform],
     [`templates/.vscode/tasks.json`, `.vscode/tasks.json`, identityTransform],
-    [`templates/code-of-conduct.md`, `code-of-conduct.md`, identityTransform],
+    [`templates/code-of-conduct.md`, `docs/code-of-conduct.md`, identityTransform],
     [`templates/tsconfig.json`, `tsconfig.json`, identityTransform],
     [`templates/tslint.json`, `tslint.json`, identityTransform],
   ];
@@ -36,7 +36,7 @@ export function manageModule(scope, name, description, isPrivate, cwd = process.
     console.log(`Updating ${dstPath}`);
     copyOrModify(`${root}/${srcPath}`, `${pDir}/${dstPath}`, transformer);
   });
-  if (scope) {
+  if (scope && registry === "https://npm.pkg.github.com") {
     cp.spawn(
       "npm",
       `config set @${scope}:registry https://npm.pkg.github.com/$scope`.split(" "),
@@ -85,24 +85,29 @@ function copyOrModify(
 }
 
 function mergeREADME(scope: string, name: string, description: string) {
-  const replacers = !!description
-    ? [{
+  const replacers = [
+    scope.match(/^@/)
+      ? {
+        // first replace the npm-scoped tufan-io
+        match: /@tufan-io\//g,
+        replace: scope,
+      } :
+      null,
+    {
+      // then replace tufan-io that might exist otherwise
       match: /tufan-io/g,
-      replace: scope,
+      replace: scope.replace(/^@/, ""),
     }, {
       match: /simple-ci/g,
       replace: name,
-    }, {
-      match: new RegExp("> TODO: Describe your module here"),
-      replace: description,
-    }]
-    : [{
-      match: /tufan-io/g,
-      replace: scope,
-    }, {
-      match: /simple-ci/g,
-      replace: name,
-    }];
+    },
+    !!description
+      ? {
+        match: new RegExp("> TODO: Describe your module here"),
+        replace: description,
+      }
+      : null
+  ].filter((x) => !!x);
   return (src: string, dst: string, _dstFile: string) => {
     return !!dst
       ? dst
@@ -117,12 +122,12 @@ function mergeLicense(isPrivate: boolean, root: string) {
   return (_src: string, _dst: string, _dstFile: string) => license;
 }
 
-function mergePackageJson(scope, name, description, isPrivate, version) {
+function mergePackageJson(scope, name, description, isPrivate, registry, version) {
   return (srcStr: string, dstStr: string, _dstFile: string) => {
     const src = JSON.parse(srcStr);
     const dst = JSON.parse(dstStr);
     dst[`run-batch`] = src[`run-batch`];
-    dst.name = `@${scope}/${name}`;
+    dst.name = scope.match(/^@/) ? `${scope}/${name}` : name;
     dst.description = description;
     dst.engines = src.engines;
     dst.publishConfig = src.publishConfig;
@@ -142,17 +147,13 @@ function mergePackageJson(scope, name, description, isPrivate, version) {
       dst.private = false;
       dst.license = "Apache-2.0";
     }
-    dst.publishConfig = {
-      "registry": "https://npm.pkg.github.com/",
-    };
-    dst["simple-ci"] = {
-      version,
-    };
+    dst.publishConfig = { registry };
+    dst["simple-ci"] = { version };
     // this changes any git urls embedded in package.json
     const serialized = JSON.stringify(dst, null, 2);
     regexpReplacer(serialized, [{
       match: /tufan-io/g,
-      replace: scope,
+      replace: scope.replace(/^@/, ""),
     }, {
       match: /simple-ci/g,
       replace: name,
@@ -166,7 +167,7 @@ function mergeActionCiYml(root: string, scope: string) {
   return (src: string, _dst: string, _dstFile: string) =>
     regexpReplacer(src, [{
       match: /tufan-io/g,
-      replace: scope,
+      replace: scope.replace(/^@/, ""),
     }]);
 }
 

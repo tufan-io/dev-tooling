@@ -11,6 +11,6 @@ test(`refresh-templates`, async (t) => {
   await fs.copy(`${__dirname}/../../.vscode`, `${__dirname}/../../templates/.vscode`);
   await fs.copy(`${__dirname}/../../tsconfig.json`, `${__dirname}/../../templates/tsconfig.json`);
   await fs.copy(`${__dirname}/../../tslint.json`, `${__dirname}/../../templates/tslint.json`);
-  await fs.copy(`${__dirname}/../../code-of-conduct.md`, `${__dirname}/../../templates/code-of-conduct.md`);
+  await fs.copy(`${__dirname}/../../docs/code-of-conduct.md`, `${__dirname}/../../templates/code-of-conduct.md`);
   t.pass();
 });

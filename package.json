@@ -29,7 +29,7 @@
   ],
   "scripts": {
     "build": "npm-run-batch",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "changelog": "conventional-changelog -p angular -i docs/CHANGELOG.md -s",
     "check-coverage": "nyc check-coverage -x .tmp",
     "check-run-scripts": "run-batch",
     "checks": "run-batch",
@@ -43,7 +43,7 @@
     "compile:watch": "tsc -w",
     "dep-check": "dependency-check . --missing",
     "dependency-upgrade": "run-batch",
-    "ensure-bins": "which npm-check sort-package-json",
+    "ensure-bins": "which npm-check git-cz",
     "format": "tsfmt -r",
     "git-add_": "git add .",
     "git-commit-upgrade_": "git diff-index --quiet HEAD || git commit -m \"chore: 🤖 updating dependencies\"",
@@ -69,14 +69,23 @@
   },
   "husky": {
     "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "npm run pre-commit-hook",
       "pre-push": "npm run pre-push-hook"
     }
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "changelog": {
+        "disableEmoji": true
+      },
+      "path": "git-cz"
     }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "ava": {
     "files": [
@@ -118,12 +127,14 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.0",
+    "@commitlint/config-conventional": "^8.3.4",
     "@types/fs-extra": "^8.1.0",
     "@types/inquirer": "^6.5.0",
     "@types/node": "^13.13.2",
     "ava": "^3.7.1",
     "cloc": "^2.5.1",
     "commitizen": "^4.0.3",
+    "commitlint": "^8.3.5",
     "conventional-changelog-cli": "^2.0.28",
     "cross-env": "^7.0.2",
     "cz-conventional-changelog": "^3.0.2",
@@ -220,5 +231,6 @@
       "pre-push-hook",
       "dependency-upgrade"
     ]
-  }
+  },
+  "devDependencies": {}
 }

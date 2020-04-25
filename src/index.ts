@@ -7,12 +7,12 @@ import { questions } from "./questions";
 export function main(cwd = process.cwd()) {
   const { packageJson } = readPkgUp.sync({ cwd });
   return prompt(questions(packageJson.name, packageJson.description, packageJson.private !== false))
-    .then(({ pkgname, description, isPrivate }) => {
+    .then(({ pkgname, description, isPrivate, registry, pkgname1 }) => {
       const [scope, name] = [
         "tufan-io",
-        ...(pkgname as string).replace(/^@/, "").split("/"),
+        ...((pkgname1 || pkgname) as string).replace(/^@/, "").split("/"),
       ].slice(-2);
-      return manageModule(scope, name, description, isPrivate, cwd);
+      return manageModule(scope, name, description, isPrivate, registry, cwd);
     });
 }
 

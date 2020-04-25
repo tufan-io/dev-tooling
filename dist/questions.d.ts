@@ -3,17 +3,17 @@ export declare const questions: (name: string, description: string, isPrivate: a
     name: string;
     message: string;
     default: string;
-    format: (val: any) => any;
-    validate: (val: any) => true | "Module names should be of form '@scope/name'";
+    validate: (val: any) => true | "module name must be of form 'scope/name' or '@scope/name'";
     choices?: undefined;
+    when?: undefined;
 } | {
     type: string;
     name: string;
     message: string;
     default: string;
-    format?: undefined;
     validate?: undefined;
     choices?: undefined;
+    when?: undefined;
 } | {
     type: string;
     name: string;
@@ -23,6 +23,25 @@ export declare const questions: (name: string, description: string, isPrivate: a
         value: boolean;
     }[];
     default: any;
-    format?: undefined;
     validate?: undefined;
+    when?: undefined;
+} | {
+    type: string;
+    name: string;
+    message: string;
+    default: (ans: any) => "https://npm.pkg.github.com" | "https://registry.npmjs.org";
+    choices: {
+        name: string;
+        value: string;
+    }[];
+    validate?: undefined;
+    when?: undefined;
+} | {
+    when: (ans: any) => boolean;
+    type: string;
+    name: string;
+    message: string;
+    default: (ans: any) => any;
+    validate: (val: any, ans: any) => true | "Module hosted on github must be of form '@scope/name'";
+    choices?: undefined;
 })[];

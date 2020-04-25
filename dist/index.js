@@ -8,12 +8,12 @@ const questions_1 = require("./questions");
 function main(cwd = process.cwd()) {
     const { packageJson } = readPkgUp.sync({ cwd });
     return inquirer_1.prompt(questions_1.questions(packageJson.name, packageJson.description, packageJson.private !== false))
-        .then(({ pkgname, description, isPrivate }) => {
+        .then(({ pkgname, description, isPrivate, registry, pkgname1 }) => {
         const [scope, name] = [
             "tufan-io",
-            ...pkgname.replace(/^@/, "").split("/"),
+            ...(pkgname1 || pkgname).replace(/^@/, "").split("/"),
         ].slice(-2);
-        return manage_module_1.manageModule(scope, name, description, isPrivate, cwd);
+        return manage_module_1.manageModule(scope, name, description, isPrivate, registry, cwd);
     });
 }
 exports.main = main;

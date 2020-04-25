@@ -31,17 +31,18 @@ Please ensure you have these dependencies installed globally
 1. [git](https://git-scm.com/downloads)
 2. [node.js](https://nodejs.org/) (preferrably via [nvm](https://github.com/nvm-sh/nvm) or [nvm-windows](https://github.com/coreybutler/nvm-windows))
 3. [perl](https://www.perl.org/get.html) (to run [cloc](https://www.npmjs.com/package/cloc))
-4. `npm i npm-check -g`
-5. `npm i sort-package-json -g`
+4. `npm i npm-check -g` (to selectively update dependencies)
+5. `npm i git-cz -g` (to help create correctly formatted commit messages)
 
 ## DX & minimizing tech-debt
 
 This package take an opinioned view on the Developer-Experience with an eye towards minimizing tech-debt.
 There are four operations that will be part of a developer experience:
 
-- `npm build`: cleans, lints, builds and tests with coverage metrics.
+- `npm build`: cleans, lints, builds and tests with coverage metrics
 - `git cz`: formats commit message to ease generation of Changelogs
-- `git push`: a pre-push hook runs coverage-check, checks packages for updates and unpatched vulnerabilities
+- `git push`: a pre-push hook runs coverage-check, checks for vulnerabilities in dependencies
+- `npm-check -u`: allows user to select among modules to update
 
 The process is meant to serve as an early-warning mechanism to catch issues that will cause potentially
 expensive mishaps or re-work later in the project life-cycle.
@@ -88,8 +89,6 @@ committed to the git repo. By design, the dist directory is committed.
 This allows using git urls as installation targets when needed.
 
 ```
-    ├── .github/
-    ├── .vscode/
     ├── dist/                 - compiled output
     ├── docs/                 - reports & documentation
     ├── src/                  - module source (TypeScript)
@@ -99,13 +98,15 @@ This allows using git urls as installation targets when needed.
     │   │   └── index.ts      - test file (ava.js)
     │   ├── utils/            - utils needed by module source
     │   └── index.ts          - source file
-    ├── .editorconfig
-    ├── .gitignore
-    ├── .npmignore
-    ├── code-of-conduct.md
-    ├── LICENSE
     ├── package.json
     ├── README.md
+    │           (config/boilerplate files, typically they just work)
+    ├── .editorconfig
+    ├── .github/
+    ├── .gitignore
+    ├── .npmignore
+    ├── .vscode/
+    ├── LICENSE
     ├── tsconfig.json
     └── tslint.json
 ```

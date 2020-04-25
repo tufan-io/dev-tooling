@@ -19,7 +19,6 @@ npm install @tufan-io/simple-ci
 > TODO: Add API/Usage details here
 
 ## Development Tooling
-## Development Tooling
 - [Development tooling](docs/DevTools.md)
 - [CLOC reports](docs/cloc.md)
 - [TODOS](docs/TODOs.md)

@@ -135,6 +135,7 @@ function mergePackageJson(scope, name, description, isPrivate, registry, version
     dst.nyc = src.nyc;
     dst.husky = src.husky;
     dst.config = src.config; // commitzen
+    dst.commitlint = src.commitlint;
     dst.scripts = src.scripts;
     dst.scripts["dep-check"] = "dependency-check . --no-dev";
     dst.files = ["dist", "docs"];

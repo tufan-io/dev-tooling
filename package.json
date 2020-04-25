@@ -1,6 +1,6 @@
 {
   "name": "@tufan-io/simple-ci",
-  "version": "0.2.20",
+  "version": "0.2.21",
   "private": false,
   "description": "",
   "keywords": [],
@@ -67,7 +67,7 @@
     "todos": "leasot --exit-nicely --skip-unsupported ./src",
     "todos-md": "leasot --exit-nicely --skip-unsupported --reporter markdown ./src> ./docs/TODOs.md",
     "upgrade_": "npm upgrade",
-    "postversion": "run-batch"
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
   },
   "husky": {
     "hooks": {
@@ -199,12 +199,7 @@
       "pkg-ok",
       "staged-mods-ok"
     ],
-    "postversion": [
-      "changelog",
-      "no-mods"
-    ],
     "prepublishOnly": [
-      "changelog",
       "no-mods"
     ],
     "pre-commit-hook": [

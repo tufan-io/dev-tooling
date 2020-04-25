@@ -24,6 +24,7 @@ function manageModule(scope, name, description, isPrivate, registry, cwd = proce
         [`templates/.github/workflows/action-ci.yml`, `.github/workflows/action-ci.yml`, mergeActionCiYml(root, scope)],
         [`templates/_gitignore`, `.gitignore`, identityTransform],
         [`templates/_npmignore`, `.npmignore`, identityTransform],
+        [`templates/_npmrc`, `.npmrc`, identityTransform],
         [`templates/.vscode/launch.json`, `.vscode/launch.json`, identityTransform],
         [`templates/.vscode/settings.json`, `.vscode/settings.json`, identityTransform],
         [`templates/.vscode/tasks.json`, `.vscode/tasks.json`, identityTransform],

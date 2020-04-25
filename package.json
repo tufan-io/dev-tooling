@@ -199,10 +199,12 @@
       "staged-mods-ok"
     ],
     "postversion": [
-      "changelog"
+      "changelog",
+      "no-mods"
     ],
     "prepublishOnly": [
-      "changelog"
+      "changelog",
+      "no-mods"
     ],
     "pre-commit-hook": [
       "check-coverage",

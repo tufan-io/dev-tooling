@@ -11,7 +11,7 @@ function main(cwd = process.cwd()) {
         .then(({ pkgname, description, isPrivate, registry, pkgname1 }) => {
         const [scope, name] = [
             "tufan-io",
-            ...(pkgname1 || pkgname).replace(/^@/, "").split("/"),
+            ...(pkgname1 || pkgname).split("/"),
         ].slice(-2);
         return manage_module_1.manageModule(scope, name, description, isPrivate, registry, cwd);
     });

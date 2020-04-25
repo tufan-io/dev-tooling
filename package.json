@@ -53,10 +53,9 @@
     "npm-check_": "npm-check -y",
     "nyc-report": "nyc report --reporter=text-summary",
     "pkg-ok": "pkg-ok",
-    "postversion": "run-batch",
-    "prepublishOnly": "run-batch",
     "pre-commit-hook": "run-batch",
     "pre-push-hook": "run-batch",
+    "prepublishOnly": "run-batch",
     "qt": "npm-run-batch",
     "secure": "npm audit",
     "sh": "npm-sh",
@@ -67,14 +66,20 @@
     "test-no-cover": "cross-env NODE_ENV=test ava --verbose",
     "todos": "leasot --exit-nicely --skip-unsupported ./src",
     "todos-md": "leasot --exit-nicely --skip-unsupported --reporter markdown ./src> ./docs/TODOs.md",
-    "upgrade_": "npm upgrade"
+    "upgrade_": "npm upgrade",
+    "postversion": "run-batch"
   },
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "npm run pre-commit-hook",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-push": "npm run pre-push-hook"
     }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "config": {
     "commitizen": {
@@ -83,11 +88,6 @@
       },
       "path": "git-cz"
     }
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
   },
   "ava": {
     "files": [
@@ -168,6 +168,7 @@
     "typestrict": "^1.0.2",
     "which": "^2.0.2"
   },
+  "devDependencies": {},
   "engines": {
     "node": ">=13.0.0"
   },
@@ -241,6 +242,5 @@
       "pre-push-hook",
       "dependency-upgrade"
     ]
-  },
-  "devDependencies": {}
+  }
 }

@@ -53,6 +53,8 @@
     "npm-check_": "npm-check -y",
     "nyc-report": "nyc report --reporter=text-summary",
     "pkg-ok": "pkg-ok",
+    "postversion": "run-batch",
+    "prepublishOnly": "run-batch",
     "pre-commit-hook": "run-batch",
     "pre-push-hook": "run-batch",
     "qt": "npm-run-batch",
@@ -195,6 +197,12 @@
       "no-circular-deps",
       "pkg-ok",
       "staged-mods-ok"
+    ],
+    "postversion": [
+      "changelog"
+    ],
+    "prepublishOnly": [
+      "changelog"
     ],
     "pre-commit-hook": [
       "check-coverage",

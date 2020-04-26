@@ -1,6 +1,6 @@
 {
   "name": "@tufan-io/simple-ci",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": false,
   "description": "simple-ci - a batterries included CI, built to run on github-actions",
   "keywords": [],

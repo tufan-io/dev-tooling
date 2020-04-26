@@ -1,4 +1,4 @@
-export declare const questions: (name: string, description: string, isPrivate: any) => ({
+export declare const questions: (name: string, description: string, isPrivate: any, registry: any) => ({
     type: string;
     name: string;
     message: string;
@@ -29,7 +29,7 @@ export declare const questions: (name: string, description: string, isPrivate: a
     type: string;
     name: string;
     message: string;
-    default: (ans: any) => "https://npm.pkg.github.com" | "https://registry.npmjs.org";
+    default: (ans: any) => any;
     choices: {
         name: string;
         value: string;

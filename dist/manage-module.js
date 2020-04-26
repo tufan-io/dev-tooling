@@ -20,6 +20,7 @@ function manageModule(scope, name, description, isPrivate, registry, cwd = proce
         [`LICENSE`, `LICENSE`, mergeLicense(isPrivate, root)],
         [`package.json`, `package.json`, mergePackageJson(scope, name, description, isPrivate, registry, version)],
         [`docs/sample-README.md`, `README.md`, mergeREADME(scope, name, description)],
+        [`docs/sample-SECURITY.md`, `SECURITY.md`, identityTransform],
         [`templates/.editorconfig`, `.editorconfig`, identityTransform],
         [`templates/.github/workflows/action-ci.yml`, `.github/workflows/action-ci.yml`, mergeActionCiYml(root, scope)],
         [`templates/_gitignore`, `.gitignore`, identityTransform],

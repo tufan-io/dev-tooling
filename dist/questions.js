@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.questions = (name, description, isPrivate) => {
+exports.questions = (name, description, isPrivate, registry) => {
     // tslint:disable: object-literal-sort-keys
     return [{
             type: "text",
@@ -28,10 +28,12 @@ exports.questions = (name, description, isPrivate) => {
             type: "list",
             name: "registry",
             message: "which registry is this module published to? ",
-            default: (ans) => ans.isPrivate === true
-                // tslint:disable-next-line: no-duplicate-string
-                ? "https://npm.pkg.github.com"
-                : "https://registry.npmjs.org",
+            default: (ans) => registry
+                ? registry
+                : ans.isPrivate === true
+                    // tslint:disable-next-line: no-duplicate-string
+                    ? "https://npm.pkg.github.com"
+                    : "https://registry.npmjs.org",
             choices: [
                 { name: "github", value: "https://npm.pkg.github.com" },
                 { name: "npm", value: "https://registry.npmjs.org" },

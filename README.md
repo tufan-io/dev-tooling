@@ -16,7 +16,9 @@ npm install @tufan-io/simple-ci --save-dev
 # configure simple-ci -
 #  - an interactive prompt to seek minimal information
 #  - uses these answers to make modifications mentioned above
-npx config-simple-ci
+npx simple-ci config
+# `npm simple-ci config --help` for details
+
 ```
 
 ## Why?
@@ -31,31 +33,47 @@ Importantly, it brings it under the semver management via npm.
 The module uses a script to be run post-installation, and makes inplace modification
 to the dependent module. Specifically:
 
-- package.json,
-- README
-- LICENSE
-- code-of-conduct.md
-- tsconfig.json,
-- tslint.json,
-- .github/workflows/action-ci.yml
-- .gitignore
-- .npmignore
-- .npmrc
-- .editorconfig
-- docs/DevTools.md
-- .vscode/launch.json
-- .vscode/settings.json
-- .vscode/tasks.json
+    ├── .editorconfig
+    ├── .github
+    │   └── workflows
+    │       └── action-ci.yml
+    ├── .gitignore
+    ├── .npmignore
+    ├── .npmrc
+    ├── .vscode
+    │   ├── launch.json
+    │   ├── settings.json
+    │   └── tasks.json
+    ├── LICENSE
+    ├── README.md
+    ├── SECURITY.md
+    ├── docs
+    │   ├── DevTools.md
+    │   └── code-of-conduct.md
+    ├── package.json       (partial overwirte)
+    ├── src                (optional - only when absent, to allow run-scripts to work)
+    │   ├── index.ts        ...
+    │   └── test            ...
+    │       └── index.ts    ...
+    ├── tsconfig.json
+    └── tslint.json
 
-The post install script aims to be curteous and will seek permission, and where
-possible display changes to be made, before actually making them. For the moment,
-that is an aspirational goal.
+These files, with the exception of `./src/*` and parts of `package.json`,  are
+designed to be managed by `simple-ci`. Meaning a flow of:
+
+     npm up @tufan-io/simple-ci
+     npx simple-ci config
+
+Will result in all ther files being overwritten. It's best to log issues against
+`simple-ci` for changes you want to be widely available. Any other changes will
+have to be manually managed in conjunction with `git diff`.
 
 ## Development Tooling
 - [Development tooling](docs/DevTools.md)
 - [CLOC reports](docs/cloc.md)
 - [TODOS](docs/TODOs.md)
 - [Changelog](CHANGELOG.md)
+- [Security](SECURITY.md)
 
 ## License
 [Apache-2.0](LICENSE.md)

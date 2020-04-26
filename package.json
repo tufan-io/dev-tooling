@@ -2,7 +2,7 @@
   "name": "@tufan-io/simple-ci",
   "version": "0.2.22",
   "private": false,
-  "description": "",
+  "description": "simple-ci - a batterries included CI, built to run on github-actions",
   "keywords": [],
   "homepage": "https://github.com/tufan-io/simple-ci#readme",
   "bugs": {
@@ -17,7 +17,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "config-simple-ci": "./dist/index.js"
+    "simple-ci": "./dist/index.js"
   },
   "directories": {
     "doc": "docs"
@@ -28,6 +28,7 @@
     "templates"
   ],
   "scripts": {
+    "add-changelog": "git add docs/CHANGELOG.md",
     "build": "npm-run-batch",
     "changelog": "conventional-changelog -p angular -i docs/CHANGELOG.md -s",
     "check-coverage": "nyc check-coverage -x .tmp",
@@ -35,18 +36,22 @@
     "checks": "run-batch",
     "clean": "rimraf dist .nyc_output coverage *.tsbuildinfo",
     "cloc": "run-batch",
+    "cloc-cli": "cloc --exclude-dir=test --quiet --sum-one --hide-rate --unix ./src",
     "cloc-md": "cloc --exclude-dir=test --quiet --sum-one --hide-rate --unix --by-file --md --out=docs/cloc.md ./src",
     "cloc-report": "cloc --exclude-dir=test --quiet --sum-one --hide-rate --unix --out=docs/cloc.report ./src",
-    "cloc_": "cloc --exclude-dir=test --quiet --sum-one --hide-rate --unix ./src",
     "commit": "git-cz",
     "compile": "tsc",
     "compile:watch": "tsc -w",
     "dep-check": "dependency-check . --missing",
     "dependency-upgrade": "run-batch",
     "ensure-bins": "which npm-check git-cz",
+    "fetch-all-tags": "git fetch --all --tags",
     "format": "tsfmt -r",
-    "git-add_": "git add .",
-    "git-commit-upgrade_": "git diff-index --quiet HEAD || git commit -m \"chore: 🤖 updating dependencies\"",
+    "gen-changelog": "conventional-changelog -p angular -i docs/CHANGELOG.md -s",
+    "git-add-all": "git add .",
+    "git-push": "git push",
+    "git-push-tags": "git push origin --tags",
+    "git-upgrade-commit": "git diff-index --quiet HEAD || git commit -m \"chore: updating dependencies\"",
     "lint": "tslint -c tslint.json --project ./tsconfig.json --format stylish",
     "no-circular-deps": "madge --circular dist/index.js",
     "no-mods": "git-mods",
@@ -56,7 +61,8 @@
     "pre-commit-hook": "run-batch",
     "pre-push-hook": "run-batch",
     "prepublishOnly": "run-batch",
-    "qt": "npm-run-batch",
+    "postpublish": "run-batch",
+    "qt": "run-batch",
     "secure": "npm audit",
     "sh": "npm-sh",
     "snapshots": "cross-env NODE_ENV=test ava --verbose --update-snapshots",
@@ -66,8 +72,7 @@
     "test-no-cover": "cross-env NODE_ENV=test ava --verbose",
     "todos": "leasot --exit-nicely --skip-unsupported ./src",
     "todos-md": "leasot --exit-nicely --skip-unsupported --reporter markdown ./src> ./docs/TODOs.md",
-    "upgrade_": "npm upgrade",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
+    "preversion": "run-batch"
   },
   "husky": {
     "hooks": {
@@ -166,7 +171,8 @@
     "typescript": "^3.7.3",
     "typescript-formatter": "^7.2.2",
     "typestrict": "^1.0.2",
-    "which": "^2.0.2"
+    "which": "^2.0.2",
+    "yargs": "^15.3.1"
   },
   "devDependencies": {},
   "engines": {
@@ -206,6 +212,8 @@
       "check-coverage",
       "dep-check",
       "pkg-ok",
+      "sort-package-json",
+      "no-circular-deps",
       "staged-mods-ok"
     ],
     "pre-push-hook": [
@@ -215,19 +223,27 @@
     "cloc": [
       "cloc-md",
       "cloc-report",
-      "cloc_"
+      "cloc-cli"
     ],
     "dependency-upgrade": [
       "no-mods",
       "ensure-bins",
-      "sort-package-json",
-      "npm-check_",
-      "upgrade_",
+      "upgrade",
       "dep-check",
       "no-circular-deps",
-      "git-add_",
+      "git-add-all",
       "build",
       "git-commit-upgrade_"
+    ],
+    "preversion": [
+      "no-mods",
+      "fetch-all-tags",
+      "gen-changelog",
+      "add-changelog"
+    ],
+    "postpublish": [
+      "git-push",
+      "git-push-tags"
     ],
     "check-run-scripts": [
       "build",

@@ -44,7 +44,6 @@
     "compile:watch": "tsc -w",
     "dep-check": "dependency-check . --missing",
     "dependency-upgrade": "run-batch",
-    "ensure-bins": "which npm-check git-cz",
     "fetch-all-tags": "git fetch --all --tags",
     "format": "tsfmt -r",
     "gen-changelog": "conventional-changelog -p angular -i docs/CHANGELOG.md -s",
@@ -60,6 +59,7 @@
     "pkg-ok": "pkg-ok",
     "pre-commit-hook": "run-batch",
     "pre-push-hook": "run-batch",
+    "prepare": "which npm-check git-cz",
     "prepublishOnly": "run-batch",
     "postpublish": "run-batch",
     "qt": "run-batch",
@@ -72,6 +72,7 @@
     "test-no-cover": "cross-env NODE_ENV=test ava --verbose",
     "todos": "leasot --exit-nicely --skip-unsupported ./src",
     "todos-md": "leasot --exit-nicely --skip-unsupported --reporter markdown ./src> ./docs/TODOs.md",
+    "upgrade-all": "npm upgrade",
     "preversion": "run-batch"
   },
   "husky": {
@@ -137,8 +138,8 @@
     "@commitlint/config-conventional": "^8.3.4",
     "@types/fs-extra": "^8.1.0",
     "@types/inquirer": "^6.5.0",
-    "@types/node": "^13.13.2",
-    "ava": "^3.7.1",
+    "@types/node": "^13.13.4",
+    "ava": "^3.8.0",
     "cloc": "^2.5.1",
     "commitizen": "^4.0.3",
     "commitlint": "^8.3.5",
@@ -227,13 +228,12 @@
     ],
     "dependency-upgrade": [
       "no-mods",
-      "ensure-bins",
-      "upgrade",
+      "upgrade-all",
       "dep-check",
       "no-circular-deps",
       "git-add-all",
       "build",
-      "git-commit-upgrade_"
+      "git-upgrade-commit"
     ],
     "preversion": [
       "no-mods",

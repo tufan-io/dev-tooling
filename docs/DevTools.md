@@ -107,7 +107,7 @@ In reality, we use `run-scripts` to accomplish the following sequence:
       git fetch --all --tags
       conventional-changelog -p angular -i docs/CHANGELOG.md -s
       git add CHANGELOG.md
-    npm version patch
+    npm version patch # bumps version number and creates a commit, including changelog
     npm publish
     # postpublish
       git push

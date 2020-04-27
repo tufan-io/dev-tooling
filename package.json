@@ -46,7 +46,6 @@
     "dependency-upgrade": "run-batch",
     "fetch-all-tags": "git fetch --all --tags",
     "format": "tsfmt -r",
-    "gen-changelog": "conventional-changelog -p angular -i docs/CHANGELOG.md -s",
     "git-add-all": "git add .",
     "git-push": "git push",
     "git-push-tags": "git push origin --tags",
@@ -73,7 +72,8 @@
     "todos": "leasot --exit-nicely --skip-unsupported ./src",
     "todos-md": "leasot --exit-nicely --skip-unsupported --reporter markdown ./src> ./docs/TODOs.md",
     "upgrade-all": "npm upgrade",
-    "preversion": "run-batch"
+    "preversion": "run-batch",
+    "version": "conventional-changelog -p angular -i docs/CHANGELOG.md -s && git add docs/CHANGELOG.md"
   },
   "husky": {
     "hooks": {
@@ -237,9 +237,7 @@
     ],
     "preversion": [
       "no-mods",
-      "fetch-all-tags",
-      "gen-changelog",
-      "add-changelog"
+      "fetch-all-tags"
     ],
     "postpublish": [
       "git-push",

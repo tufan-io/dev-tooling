@@ -105,6 +105,7 @@
     ]
   },
   "nyc": {
+    "branches": 100,
     "exclude": [
       "**/test/**",
       "**/helpers/**",
@@ -114,6 +115,9 @@
       ".ts",
       ".tsx"
     ],
+    "functions": 100,
+    "lines": 100,
+    "statements": 100,
     "watermarks": {
       "branches": [
         100,

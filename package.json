@@ -60,7 +60,7 @@
     "pre-push-hook": "run-batch",
     "prepare": "which npm-check git-cz",
     "prepublishOnly": "run-batch",
-    "postpublish": "run-batch",
+    "prepublish": "run-batch",
     "qt": "run-batch",
     "secure": "npm audit",
     "sh": "npm-sh",
@@ -243,7 +243,8 @@
       "no-mods",
       "fetch-all-tags"
     ],
-    "postpublish": [
+    "prepublish": [
+      "check-coverage",
       "git-push",
       "git-push-tags"
     ],

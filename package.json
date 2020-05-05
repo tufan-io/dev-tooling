@@ -60,7 +60,6 @@
     "pre-push-hook": "run-batch",
     "prepare": "which npm-check git-cz",
     "prepublishOnly": "run-batch",
-    "prepublish": "run-batch",
     "qt": "run-batch",
     "secure": "npm audit",
     "sh": "npm-sh",
@@ -211,7 +210,10 @@
       "staged-mods-ok"
     ],
     "prepublishOnly": [
-      "no-mods"
+      "no-mods",
+      "check-coverage",
+      "git-push",
+      "git-push-tags"
     ],
     "pre-commit-hook": [
       "check-coverage",
@@ -242,11 +244,6 @@
     "preversion": [
       "no-mods",
       "fetch-all-tags"
-    ],
-    "prepublish": [
-      "check-coverage",
-      "git-push",
-      "git-push-tags"
     ],
     "check-run-scripts": [
       "build",

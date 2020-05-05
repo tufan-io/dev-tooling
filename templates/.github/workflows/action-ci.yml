@@ -7,13 +7,61 @@ on:
 name: action-ci
 
 jobs:
-  matrix-build:
+  # When an ubuntu build fails, it's very likely that macos & win32 builds will also fail.
+  # Both of those run slower and cost more. While the price itself it not a deal
+  # breaker, the failure email is also delayed.
+  #
+  # In terms of pricing, by one estimate,
+  #   win32 builds: ~2x(time)   & ~4x(cost)
+  #   macos builds: ~1.7x(time) & ~16x(cost)
+  #
+  # In terms of time, this is double the advertized cost.
+  #
+  # To optimize, we split the build into two sequntial jobs,
+  #   - the first job builds & tests on ubuntu
+  #   - the second job builds & tests on win & macos.
+  #
+  # At the slight cost of delaying successful builds, it improves the speed of
+  # failure notification while save a few bucks.
+  ubuntu-build:
     timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
         node: [13, 14]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
+    name: build.${{ matrix.os }}.${{ matrix.node }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v1
+      - uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: '5.30'
+      - run: perl -V
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+          always-auth: true
+          registry-url: https://npm.pkg.github.com
+          scope: '@tufan-io'
+      - run: node --version
+      # npm-check has dependencies with vulnerabilities.
+      - run: npm i npm-check -g
+      - run: npm --version
+      - run: git config --global url."https://${{secrets.ACTION_CI}}@github.com".insteadOf ssh://git@github.com
+      - run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.ACTION_CI}}
+      - run: npm run build
+
+  win-macos-build:
+    needs: [ ubuntu-build ]
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [13, 14]
+        os: [windows-latest, macos-latest]
     name: build.${{ matrix.os }}.${{ matrix.node }}
     runs-on: ${{ matrix.os }}
     steps:

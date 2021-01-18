@@ -1,4 +1,4 @@
-cloc|github.com/AlDanial/cloc v 1.85
+cloc|github.com/AlDanial/cloc v 1.88
 --- | ---
 
 File|blank|comment|code

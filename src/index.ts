@@ -2,7 +2,7 @@
 import { prompt } from "inquirer";
 import * as path from "path";
 import * as readPkgUp from "read-pkg-up";
-import * as yargs from "yargs";
+import yargs from "yargs";
 import { manageModule } from "./manage-module";
 import { questions } from "./questions";
 
@@ -13,7 +13,7 @@ export function main({
   description,
   isPrivate,
   registry,
-  force,
+  force = false,
 }: {
   cwd: string;
   name?: string;
@@ -21,7 +21,7 @@ export function main({
   description?: string;
   isPrivate?: boolean;
   registry?: string;
-  force: false;
+  force: boolean;
 }) {
   const packageJson = {
     name,
@@ -32,19 +32,26 @@ export function main({
   const p = packageJson;
   // TODO: use optional chaining.
   // can't wait to move to node v14!
-  registry = registry || (p && p.publishConfig && p.publishConfig.registry) as string;
-  githubOrg = githubOrg || (p && p.repository && p.repository.url && p.repository.url.split("/").slice(-2)[0]);
+  registry =
+    registry || ((p && p.publishConfig && p.publishConfig.registry) as string);
+  githubOrg =
+    githubOrg ||
+    (p &&
+      p.repository &&
+      p.repository.url &&
+      p.repository.url.split("/").slice(-2)[0]);
   name = name || packageJson.name;
-  const pkgname = !/\//.test(name) && !!githubOrg
-    ? `${githubOrg}/${packageJson.name}`
-    : name;
+  const pkgname =
+    !/\//.test(name) && !!githubOrg ? `${githubOrg}/${packageJson.name}` : name;
 
-  return new Promise(
-    (resolve, reject) => {
+  return (
+    new Promise((resolve, reject) => {
       if (force) {
         if (!githubOrg && !/\//.test(name)) {
           // we have a problem - in forced mode
-          throw new Error(`Missing githubOrg. Provide it, or add repository config to package.json`);
+          throw new Error(
+            `Missing githubOrg. Provide it, or add repository config to package.json`
+          );
         }
         resolve({
           pkgname,
@@ -57,21 +64,21 @@ export function main({
           pkgname,
           packageJson.description,
           packageJson.private !== false,
-          registry);
-        prompt(qs)
-          .then(resolve)
-          .catch(reject);
+          registry
+        );
+        prompt(qs).then(resolve).catch(reject);
       }
     })
-    // tslint:disable-next-line: no-shadowed-variable
-    .then(({ pkgname, description, isPrivate, registry, pkgname1 }) => {
       // tslint:disable-next-line: no-shadowed-variable
-      const [scope, name] = [
-        "tufan-io",
-        ...((pkgname1 || pkgname) as string).split("/"),
-      ].slice(-2);
-      return manageModule(scope, name, description, isPrivate, registry, cwd);
-    });
+      .then(({ pkgname, description, isPrivate, registry, pkgname1 }) => {
+        // tslint:disable-next-line: no-shadowed-variable
+        const [scope, name] = [
+          "tufan-io",
+          ...((pkgname1 || pkgname) as string).split("/"),
+        ].slice(-2);
+        return manageModule(scope, name, description, isPrivate, registry, cwd);
+      })
+  );
 }
 
 if (!module.parent) {
@@ -114,7 +121,8 @@ if (!module.parent) {
           .option("registry", {
             type: "string",
             alias: ["r", "reg"],
-            describe: "npm registry to use. registry.npm.org/npm.pkg.github.com",
+            describe:
+              "npm registry to use. registry.npm.org/npm.pkg.github.com",
           })
           .option("force", {
             type: "boolean",
@@ -122,8 +130,25 @@ if (!module.parent) {
             describe: "force non-interactive mode",
           });
         // tslint:disable-next-line: only-arrow-functions
-      }, function(argv) {
-        const { dir, name, description, githubOrg, private: isPrivate, registry, force } = argv;
+      },
+      (argv) => {
+        const {
+          dir,
+          name,
+          description,
+          githubOrg,
+          private: isPrivate,
+          registry,
+          force = false,
+        } = argv as {
+          dir: string;
+          name: string;
+          description: string;
+          githubOrg: string;
+          private: boolean;
+          registry: string;
+          force: boolean;
+        };
         // tslint:disable: no-console
         main({
           cwd: path.resolve(dir),
@@ -135,13 +160,15 @@ if (!module.parent) {
           force,
         })
           .then(() => {
-            console.log(`\nSuccessfully configured 'simple-ci'. To finish, execute\n  npm run build`);
+            console.log(
+              `\nSuccessfully configured 'simple-ci'. To finish, execute\n  npm run build`
+            );
           })
           .catch(console.error);
-      })
+      }
+    )
     .help()
     .alias("help", "h")
     .showHelpOnFail(true)
-    .recommendCommands()
-    .argv;
+    .recommendCommands().argv;
 }

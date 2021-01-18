@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const deepEqual = require("fast-deep-equal");
-const Remark = require("remark");
+exports.markdownReplacer = void 0;
+const tslib_1 = require("tslib");
+const fast_deep_equal_1 = tslib_1.__importDefault(require("fast-deep-equal"));
+const remark_1 = tslib_1.__importDefault(require("remark"));
 const removePositionals = (o) => {
     switch (Object.prototype.toString.apply(o)) {
         case "[object Object]":
@@ -17,7 +19,7 @@ const removePositionals = (o) => {
     }
 };
 const findAndReplace = (full, searchFor, replaceWith) => {
-    if (deepEqual(full, searchFor)) {
+    if (fast_deep_equal_1.default(full, searchFor)) {
         return replaceWith;
     }
     switch (Object.prototype.toString.apply(full)) {
@@ -32,7 +34,7 @@ const findAndReplace = (full, searchFor, replaceWith) => {
             return full;
     }
 };
-const remark = Remark()
+const remark = remark_1.default()
     .data("settings", {
     commonmark: true,
     emphasis: "*",

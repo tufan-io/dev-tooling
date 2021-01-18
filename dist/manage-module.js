@@ -1,10 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const cp = require("child_process");
-const fs = require("fs-extra");
-const path = require("path");
-const pkg_dir_1 = require("pkg-dir");
-const readPkgUp = require("read-pkg-up");
+exports.manageModule = void 0;
+const tslib_1 = require("tslib");
+const cp = tslib_1.__importStar(require("child_process"));
+const fs = tslib_1.__importStar(require("fs-extra"));
+const path = tslib_1.__importStar(require("path"));
+const pkg_dir_1 = tslib_1.__importDefault(require("pkg-dir"));
+const readPkgUp = tslib_1.__importStar(require("read-pkg-up"));
 const regexp_replacer_1 = require("./regexp-replacer");
 const identityTransform = (src, _dst, _dstFile) => src;
 function manageModule(scope, name, description, isPrivate, registry, cwd = process.cwd()) {

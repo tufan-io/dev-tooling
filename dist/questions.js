@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.questions = (name, description, isPrivate, registry) => {
+exports.questions = void 0;
+const questions = (name, description, isPrivate, registry) => {
     // tslint:disable: object-literal-sort-keys
     return [{
             type: "text",
@@ -50,4 +51,5 @@ exports.questions = (name, description, isPrivate, registry) => {
                 : "Module hosted on github must be of form '@scope/name'",
         }];
 };
+exports.questions = questions;
 //# sourceMappingURL=questions.js.map

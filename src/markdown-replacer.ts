@@ -1,5 +1,5 @@
-import * as deepEqual from "fast-deep-equal";
-import * as Remark from "remark";
+import deepEqual from "fast-deep-equal";
+import Remark from "remark";
 
 const removePositionals = (o) => {
   switch (Object.prototype.toString.apply(o)) {

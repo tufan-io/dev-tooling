@@ -1,13 +1,15 @@
 #!/usr/bin/env node --harmony-optional-chaining
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.main = void 0;
+const tslib_1 = require("tslib");
 const inquirer_1 = require("inquirer");
-const path = require("path");
-const readPkgUp = require("read-pkg-up");
-const yargs = require("yargs");
+const path = tslib_1.__importStar(require("path"));
+const readPkgUp = tslib_1.__importStar(require("read-pkg-up"));
+const yargs_1 = tslib_1.__importDefault(require("yargs"));
 const manage_module_1 = require("./manage-module");
 const questions_1 = require("./questions");
-function main({ cwd = process.cwd(), name, githubOrg, description, isPrivate, registry, force, }) {
+function main({ cwd = process.cwd(), name, githubOrg, description, isPrivate, registry, force = false, }) {
     const packageJson = {
         name,
         description,
@@ -17,13 +19,17 @@ function main({ cwd = process.cwd(), name, githubOrg, description, isPrivate, re
     const p = packageJson;
     // TODO: use optional chaining.
     // can't wait to move to node v14!
-    registry = registry || (p && p.publishConfig && p.publishConfig.registry);
-    githubOrg = githubOrg || (p && p.repository && p.repository.url && p.repository.url.split("/").slice(-2)[0]);
+    registry =
+        registry || (p && p.publishConfig && p.publishConfig.registry);
+    githubOrg =
+        githubOrg ||
+            (p &&
+                p.repository &&
+                p.repository.url &&
+                p.repository.url.split("/").slice(-2)[0]);
     name = name || packageJson.name;
-    const pkgname = !/\//.test(name) && !!githubOrg
-        ? `${githubOrg}/${packageJson.name}`
-        : name;
-    return new Promise((resolve, reject) => {
+    const pkgname = !/\//.test(name) && !!githubOrg ? `${githubOrg}/${packageJson.name}` : name;
+    return (new Promise((resolve, reject) => {
         if (force) {
             if (!githubOrg && !/\//.test(name)) {
                 // we have a problem - in forced mode
@@ -38,9 +44,7 @@ function main({ cwd = process.cwd(), name, githubOrg, description, isPrivate, re
         }
         else {
             const qs = questions_1.questions(pkgname, packageJson.description, packageJson.private !== false, registry);
-            inquirer_1.prompt(qs)
-                .then(resolve)
-                .catch(reject);
+            inquirer_1.prompt(qs).then(resolve).catch(reject);
         }
     })
         // tslint:disable-next-line: no-shadowed-variable
@@ -51,13 +55,13 @@ function main({ cwd = process.cwd(), name, githubOrg, description, isPrivate, re
             ...(pkgname1 || pkgname).split("/"),
         ].slice(-2);
         return manage_module_1.manageModule(scope, name, description, isPrivate, registry, cwd);
-    });
+    }));
 }
 exports.main = main;
 if (!module.parent) {
     process.on("SIGINT", () => process.exit(-1));
     // tslint:disable-next-line: no-unused-expression
-    yargs
+    yargs_1.default
         .scriptName("simple-ci")
         .usage("$0 <cmd> [args]")
         .command("config [dir]", "(re)configures simple-ci over an npm module", (_yargs) => {
@@ -99,8 +103,8 @@ if (!module.parent) {
             describe: "force non-interactive mode",
         });
         // tslint:disable-next-line: only-arrow-functions
-    }, function (argv) {
-        const { dir, name, description, githubOrg, private: isPrivate, registry, force } = argv;
+    }, (argv) => {
+        const { dir, name, description, githubOrg, private: isPrivate, registry, force = false, } = argv;
         // tslint:disable: no-console
         main({
             cwd: path.resolve(dir),
@@ -119,7 +123,6 @@ if (!module.parent) {
         .help()
         .alias("help", "h")
         .showHelpOnFail(true)
-        .recommendCommands()
-        .argv;
+        .recommendCommands().argv;
 }
 //# sourceMappingURL=index.js.map

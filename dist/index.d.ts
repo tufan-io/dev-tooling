@@ -6,5 +6,5 @@ export declare function main({ cwd, name, githubOrg, description, isPrivate, reg
     description?: string;
     isPrivate?: boolean;
     registry?: string;
-    force: false;
+    force: boolean;
 }): Promise<void>;

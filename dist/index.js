@@ -17,16 +17,8 @@ function main({ cwd = process.cwd(), name, githubOrg, description, isPrivate, re
         ...readPkgUp.sync({ cwd }).packageJson,
     };
     const p = packageJson;
-    // TODO: use optional chaining.
-    // can't wait to move to node v14!
-    registry =
-        registry || (p && p.publishConfig && p.publishConfig.registry);
-    githubOrg =
-        githubOrg ||
-            (p &&
-                p.repository &&
-                p.repository.url &&
-                p.repository.url.split("/").slice(-2)[0]);
+    registry = registry || `${p?.publishConfig?.registry}`;
+    githubOrg = githubOrg || p?.repository?.url.split("/").slice(-2)[0];
     name = name || packageJson.name;
     const pkgname = !/\//.test(name) && !!githubOrg ? `${githubOrg}/${packageJson.name}` : name;
     return (new Promise((resolve, reject) => {

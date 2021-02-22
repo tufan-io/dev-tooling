@@ -1,3 +1,12 @@
+## [0.4.1](https://github.com/tufan-io/simple-ci/compare/0.4.0...0.4.1) (2021-02-22)
+
+
+### Bug Fixes
+
+* revert node v16 ([6698585](https://github.com/tufan-io/simple-ci/commit/6698585ac0f114a09e5a1ada91a79e8355688aaf))
+
+
+
 # [0.4.0](https://github.com/tufan-io/simple-ci/compare/0.3.5...0.4.0) (2021-02-22)
 
 

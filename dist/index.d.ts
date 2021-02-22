@@ -1,4 +1,4 @@
-#!/usr/bin/env node --harmony-optional-chaining
+#!/usr/bin/env node
 export declare function main({ cwd, name, githubOrg, description, isPrivate, registry, force, }: {
     cwd: string;
     name?: string;

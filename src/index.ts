@@ -1,4 +1,4 @@
-#!/usr/bin/env node --harmony-optional-chaining
+#!/usr/bin/env node
 import { prompt } from "inquirer";
 import * as path from "path";
 import * as readPkgUp from "read-pkg-up";

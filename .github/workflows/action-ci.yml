@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [13, 14]
+        node: [14, 16]
         os: [ubuntu-latest]
     name: build.${{ matrix.os }}.${{ matrix.node }}
     runs-on: ${{ matrix.os }}

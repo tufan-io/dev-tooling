@@ -132,7 +132,7 @@ if (!module.parent) {
           private: isPrivate,
           registry,
           force = false,
-        } = argv as {
+        } = argv as unknown as {
           dir: string;
           name: string;
           description: string;

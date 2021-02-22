@@ -1,3 +1,12 @@
+## [0.4.3](https://github.com/tufan-io/simple-ci/compare/0.4.2...0.4.3) (2021-02-22)
+
+
+### Bug Fixes
+
+* use spawnSync to config npm registry ([ad0719a](https://github.com/tufan-io/simple-ci/commit/ad0719a5444a1410d8e21f2fbaea6210b1c8887c))
+
+
+
 ## [0.4.2](https://github.com/tufan-io/simple-ci/compare/0.4.1...0.4.2) (2021-02-22)
 
 

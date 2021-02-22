@@ -58,7 +58,7 @@
     "pkg-ok": "pkg-ok",
     "pre-commit-hook": "run-batch",
     "pre-push-hook": "run-batch",
-    "prepare": "which npm-check git-cz",
+    "prepare": "node-which npm-check git-cz",
     "prepublishOnly": "run-batch",
     "qt": "run-batch",
     "secure": "npm audit",
@@ -176,11 +176,11 @@
     "typescript": "^4.1.5",
     "typescript-formatter": "^7.2.2",
     "typestrict": "^1.0.2",
-    "which": "^2.0.2",
     "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "@types/yargs": "^16.0.0"
+    "@types/yargs": "^16.0.0",
+    "which": "^2.0.2"
   },
   "engines": {
     "node": ">=13.0.0"

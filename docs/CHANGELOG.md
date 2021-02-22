@@ -1,3 +1,12 @@
+# [0.4.0](https://github.com/tufan-io/simple-ci/compare/0.3.5...0.4.0) (2021-02-22)
+
+
+### Bug Fixes
+
+* remove harmony flags & add node 16 to CI ([672791c](https://github.com/tufan-io/simple-ci/commit/672791c3b081df8bcff855d029c72e52e01bf9fb))
+
+
+
 ## [0.3.5](https://github.com/tufan-io/simple-ci/compare/0.3.4...0.3.5) (2021-01-18)
 
 

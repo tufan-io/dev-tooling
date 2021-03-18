@@ -44,6 +44,7 @@
     "compile:watch": "tsc -w",
     "dep-check": "dependency-check . --missing -i tslib --detective detective-cjs",
     "dependency-upgrade": "run-batch",
+    "debug": "node -r ts-node/register --inspect-brk src/index.ts",
     "fetch-all-tags": "git fetch --all --tags",
     "format": "tsfmt -r",
     "git-add-all": "git add .",

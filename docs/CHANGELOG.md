@@ -1,3 +1,12 @@
+## [0.4.8](https://github.com/tufan-io/simple-ci/compare/0.4.7...0.4.8) (2021-03-31)
+
+
+### Bug Fixes
+
+* moving from tslint to eslint/prettier ([3b5ce49](https://github.com/tufan-io/simple-ci/commit/3b5ce495800117e1a277f62f43096fb6ad9adeef))
+
+
+
 ## [0.4.7](https://github.com/tufan-io/simple-ci/compare/0.4.6...0.4.7) (2021-03-21)
 
 

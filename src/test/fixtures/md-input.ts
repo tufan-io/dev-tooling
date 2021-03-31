@@ -1,4 +1,3 @@
-
 export const input = [
   "# @tufan/simple-ci",
   "",

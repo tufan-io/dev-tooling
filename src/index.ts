@@ -22,7 +22,7 @@ export function main({
   isPrivate?: boolean;
   registry?: string;
   force: boolean;
-}) {
+}): Promise<unknown> {
   const packageJson = {
     name,
     description,
@@ -132,7 +132,7 @@ if (!module.parent) {
           private: isPrivate,
           registry,
           force = false,
-        } = argv as unknown as {
+        } = (argv as unknown) as {
           dir: string;
           name: string;
           description: string;

@@ -116,7 +116,7 @@ function mergeREADME(scope, name, description) {
             match: /simple-ci/g,
             replace: name,
         },
-        !!description
+        description
             ? {
                 match: new RegExp("> TODO: Describe your module here"),
                 replace: description,
@@ -124,7 +124,7 @@ function mergeREADME(scope, name, description) {
             : null,
     ].filter((x) => !!x);
     return (src, dst, _dstFile) => {
-        return !!dst ? dst : regexp_replacer_1.regexpReplacer(src, replacers);
+        return dst ? dst : regexp_replacer_1.regexpReplacer(src, replacers);
     };
 }
 function mergeLicense(isPrivate, root) {

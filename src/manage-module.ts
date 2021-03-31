@@ -5,15 +5,18 @@ import pkgDir from "pkg-dir";
 import * as readPkgUp from "read-pkg-up";
 import { regexpReplacer } from "./regexp-replacer";
 
+// eslint-disable-next-line no-unused-vars
+type TransformFn = (src: string, dst: string, dfile: string) => string;
+
 const identityTransform = (src: string, _dst: string, _dstFile: string) => src;
 export function manageModule(
-  scope,
-  name,
-  description,
-  isPrivate,
-  registry,
+  scope: string,
+  name: string,
+  description: string,
+  isPrivate: boolean,
+  registry: string,
   cwd = process.cwd()
-) {
+): void {
   const pDir = pkgDir.sync(cwd);
   // get simple-ci version
   const {
@@ -62,11 +65,13 @@ export function manageModule(
     [`templates/tsconfig.json`, `tsconfig.json`, identityTransform],
     [`templates/tslint.json`, `tslint.json`, identityTransform],
   ];
-  files.forEach(([srcPath, dstPath, transformer]: [string, string, any]) => {
-    // tslint:disable-next-line: no-console
-    console.log(`Updating ${dstPath}`);
-    copyOrModify(`${root}/${srcPath}`, `${pDir}/${dstPath}`, transformer);
-  });
+  files.forEach(
+    ([srcPath, dstPath, transformer]: [string, string, TransformFn]) => {
+      // tslint:disable-next-line: no-console
+      console.log(`Updating ${dstPath}`);
+      copyOrModify(`${root}/${srcPath}`, `${pDir}/${dstPath}`, transformer);
+    }
+  );
   if (scope && registry === "https://npm.pkg.github.com") {
     const namespace = scope.replace(/^@/, "");
     cp.spawnSync(
@@ -104,7 +109,7 @@ export function manageModule(
 function copyOrModify(
   srcPath: string,
   dstPath: string,
-  transformer: (src: string, dst: string, dfile: string) => string
+  transformer: TransformFn
 ) {
   // tslint:disable: tsr-detect-non-literal-fs-filename
   if (!fs.statSync(srcPath).isFile()) {
@@ -120,10 +125,10 @@ function mergeREADME(scope: string, name: string, description: string) {
   const replacers = [
     scope.match(/^@/)
       ? {
-        // first replace the npm-scoped tufan-io
-        match: /@tufan-io\//g,
-        replace: scope,
-      }
+          // first replace the npm-scoped tufan-io
+          match: /@tufan-io\//g,
+          replace: scope,
+        }
       : null,
     {
       // then replace tufan-io that might exist otherwise
@@ -134,15 +139,15 @@ function mergeREADME(scope: string, name: string, description: string) {
       match: /simple-ci/g,
       replace: name,
     },
-    !!description
+    description
       ? {
-        match: new RegExp("> TODO: Describe your module here"),
-        replace: description,
-      }
+          match: new RegExp("> TODO: Describe your module here"),
+          replace: description,
+        }
       : null,
   ].filter((x) => !!x);
   return (src: string, dst: string, _dstFile: string) => {
-    return !!dst ? dst : regexpReplacer(src, replacers);
+    return dst ? dst : regexpReplacer(src, replacers);
   };
 }
 

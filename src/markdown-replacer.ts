@@ -4,11 +4,12 @@ import Remark from "remark";
 const removePositionals = (o) => {
   switch (Object.prototype.toString.apply(o)) {
     case "[object Object]":
-      const { position, ...rest } = o;
+      // eslint-disable-next-line no-case-declarations
+      const { position: _position, ...rest } = o;
       return Object.keys(rest).reduce((acc, k) => {
         acc[k] = removePositionals(rest[k]);
         return acc;
-      }, {} as object);
+      }, {} as Record<string, unknown>);
     case "[object Array]":
       return o.map((el) => removePositionals(el));
     default:
@@ -25,7 +26,7 @@ const findAndReplace = (full, searchFor, replaceWith) => {
       return Object.keys(full).reduce((acc, k) => {
         acc[k] = findAndReplace(full[k], searchFor, replaceWith);
         return acc;
-      }, {} as object);
+      }, {} as Record<string, unknown>);
     case "[object Array]":
       return full.map((el) => findAndReplace(el, searchFor, replaceWith));
     default:
@@ -33,12 +34,11 @@ const findAndReplace = (full, searchFor, replaceWith) => {
   }
 };
 
-const remark = Remark()
-  .data("settings", {
-    commonmark: true,
-    emphasis: "*",
-    strong: "*",
-  });
+const remark = Remark().data("settings", {
+  commonmark: true,
+  emphasis: "*",
+  strong: "*",
+});
 
 function parse(input: string) {
   return removePositionals(remark.parse(input));
@@ -58,11 +58,12 @@ function parse(input: string) {
 export function markdownReplacer(
   source: string,
   searchFor: string,
-  replaceWith: string,
-) {
+  replaceWith: string
+): string {
   const newAst = findAndReplace(
     parse(source),
     parse(searchFor).children,
-    parse(replaceWith).children);
+    parse(replaceWith).children
+  );
   return remark.stringify(newAst);
 }

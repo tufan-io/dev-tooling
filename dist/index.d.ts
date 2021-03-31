@@ -7,4 +7,4 @@ export declare function main({ cwd, name, githubOrg, description, isPrivate, reg
     isPrivate?: boolean;
     registry?: string;
     force: boolean;
-}): Promise<void>;
+}): Promise<unknown>;

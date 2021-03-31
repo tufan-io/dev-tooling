@@ -7,7 +7,8 @@ const remark_1 = tslib_1.__importDefault(require("remark"));
 const removePositionals = (o) => {
     switch (Object.prototype.toString.apply(o)) {
         case "[object Object]":
-            const { position, ...rest } = o;
+            // eslint-disable-next-line no-case-declarations
+            const { position: _position, ...rest } = o;
             return Object.keys(rest).reduce((acc, k) => {
                 acc[k] = removePositionals(rest[k]);
                 return acc;
@@ -34,8 +35,7 @@ const findAndReplace = (full, searchFor, replaceWith) => {
             return full;
     }
 };
-const remark = remark_1.default()
-    .data("settings", {
+const remark = remark_1.default().data("settings", {
     commonmark: true,
     emphasis: "*",
     strong: "*",

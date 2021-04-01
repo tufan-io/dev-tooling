@@ -6,13 +6,13 @@ const cp = tslib_1.__importStar(require("child_process"));
 const fs = tslib_1.__importStar(require("fs-extra"));
 const path = tslib_1.__importStar(require("path"));
 const pkg_dir_1 = tslib_1.__importDefault(require("pkg-dir"));
-const readPkgUp = tslib_1.__importStar(require("read-pkg-up"));
+const read_pkg_up_1 = tslib_1.__importDefault(require("read-pkg-up"));
 const regexp_replacer_1 = require("./regexp-replacer");
 const identityTransform = (src, _dst, _dstFile) => src;
 function manageModule(scope, name, description, isPrivate, registry, cwd = process.cwd()) {
     const pDir = pkg_dir_1.default.sync(cwd);
     // get simple-ci version
-    const { packageJson: { version }, } = readPkgUp.sync({ cwd: __dirname });
+    const { packageJson: { version }, } = read_pkg_up_1.default.sync({ cwd: __dirname });
     const root = path.resolve(`${__dirname}/..`);
     if (pDir === root) {
         return;

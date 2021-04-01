@@ -2,10 +2,9 @@ import * as cp from "child_process";
 import * as fs from "fs-extra";
 import * as path from "path";
 import pkgDir from "pkg-dir";
-import * as readPkgUp from "read-pkg-up";
+import readPkgUp from "read-pkg-up";
 import { regexpReplacer } from "./regexp-replacer";
 
-// eslint-disable-next-line no-unused-vars
 type TransformFn = (src: string, dst: string, dfile: string) => string;
 
 const identityTransform = (src: string, _dst: string, _dstFile: string) => src;

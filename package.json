@@ -157,6 +157,9 @@
     "detective-cjs": "^3.1.1",
     "eslint": "^7.23.0",
     "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "fast-deep-equal": "^3.1.3",
     "fs-extra": "^9.1.0",
@@ -188,7 +191,7 @@
     "@types/yargs": "^16.0.1"
   },
   "engines": {
-    "node": ">=13.0.0"
+    "node": ">=14.0.0"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"

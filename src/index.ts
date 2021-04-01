@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { prompt } from "inquirer";
 import * as path from "path";
-import * as readPkgUp from "read-pkg-up";
+import readPkgUp from "read-pkg-up";
 import yargs from "yargs";
 import { manageModule } from "./manage-module";
 import { questions } from "./questions";

@@ -5,7 +5,7 @@ exports.main = void 0;
 const tslib_1 = require("tslib");
 const inquirer_1 = require("inquirer");
 const path = tslib_1.__importStar(require("path"));
-const readPkgUp = tslib_1.__importStar(require("read-pkg-up"));
+const read_pkg_up_1 = tslib_1.__importDefault(require("read-pkg-up"));
 const yargs_1 = tslib_1.__importDefault(require("yargs"));
 const manage_module_1 = require("./manage-module");
 const questions_1 = require("./questions");
@@ -14,7 +14,7 @@ function main({ cwd = process.cwd(), name, githubOrg, description, isPrivate, re
         name,
         description,
         private: !!isPrivate,
-        ...readPkgUp.sync({ cwd }).packageJson,
+        ...read_pkg_up_1.default.sync({ cwd }).packageJson,
     };
     const p = packageJson;
     registry = registry || `${p?.publishConfig?.registry}`;

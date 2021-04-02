@@ -1,3 +1,12 @@
+## [0.4.14](https://github.com/tufan-io/simple-ci/compare/0.4.13...0.4.14) (2021-04-02)
+
+
+### Bug Fixes
+
+* add .gitattributes ([a64f4f9](https://github.com/tufan-io/simple-ci/commit/a64f4f95949cb40322f798d6398a86af4229b4e6))
+
+
+
 ## [0.4.13](https://github.com/tufan-io/simple-ci/compare/0.4.12...0.4.13) (2021-04-02)
 
 

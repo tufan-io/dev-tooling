@@ -13,6 +13,10 @@ test(`refresh-templates`, async (t) => {
     `${__dirname}/../../templates/_gitignore`
   );
   await fs.copy(
+    `${__dirname}/../../.gitattributes`,
+    `${__dirname}/../../templates/_gitattributes`
+  );
+  await fs.copy(
     `${__dirname}/../../.npmignore`,
     `${__dirname}/../../templates/_npmignore`
   );

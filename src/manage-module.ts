@@ -47,6 +47,7 @@ export function manageModule(
       mergeActionCiYml(root, scope),
     ],
     [`templates/_gitignore`, `.gitignore`, identityTransform],
+    [`templates/_gitattributes`, `.gitattributes`, identityTransform],
     [`templates/_npmignore`, `.npmignore`, identityTransform],
     [`templates/_npmrc`, `.npmrc`, identityTransform],
     [`templates/.vscode/launch.json`, `.vscode/launch.json`, identityTransform],

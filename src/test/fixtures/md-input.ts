@@ -16,7 +16,6 @@ export const input = [
   "The module uses a post install script to modify parent module artifacts. Specifically:",
   "- package.json,",
   "- tsconfig.json,",
-  "- tslint.json,",
   "- .github/workflows/simple-ci.yml",
   "- README",
   "- LICENSE",

@@ -6,7 +6,6 @@ export const questions = (
   isPrivate: boolean,
   registry: string
 ): inquirer.QuestionCollection<unknown> => {
-  // tslint:disable: object-literal-sort-keys
   return [
     {
       type: "text",
@@ -42,8 +41,7 @@ export const questions = (
         registry
           ? registry
           : ans.isPrivate === true
-          ? // tslint:disable-next-line: no-duplicate-string
-            "https://npm.pkg.github.com"
+          ? "https://npm.pkg.github.com"
           : "https://registry.npmjs.org",
       choices: [
         { name: "github", value: "https://npm.pkg.github.com" },
@@ -55,8 +53,15 @@ export const questions = (
         ans.registry === "https://npm.pkg.github.com" && ans.pkgname[0] !== "@",
       type: "text",
       name: "pkgname1",
-      message: "npm module name (needs scope): ",
-      default: (ans) => ans.pkgname,
+      message: "reconfirm module name: ",
+      default: (ans: {
+        registry: string;
+        pkgname: string;
+        [k: string]: unknown;
+      }) =>
+        ans.registry === "https://npm.pkg.github.com" && ans.pkgname[0] !== "@"
+          ? `@${ans.pkgname}`
+          : ans.pkgname,
       validate: (val, ans: { registry: string; [k: string]: unknown }) =>
         ans.registry === "https://npm.pkg.github.com" && !!val.match(/^@.*\/.*/)
           ? true

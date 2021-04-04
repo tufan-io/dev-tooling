@@ -36,46 +36,40 @@ export function main({
   const pkgname =
     !/\//.test(name) && !!githubOrg ? `${githubOrg}/${packageJson.name}` : name;
 
-  return (
-    new Promise((resolve, reject) => {
-      if (force) {
-        if (!githubOrg && !/\//.test(name)) {
-          // we have a problem - in forced mode
-          throw new Error(
-            `Missing githubOrg. Provide it, or add repository config to package.json`
-          );
-        }
-        resolve({
-          pkgname,
-          description: packageJson.description,
-          isPrivate: packageJson.private !== false,
-          registry,
-        });
-      } else {
-        const qs = questions(
-          pkgname,
-          packageJson.description,
-          packageJson.private !== false,
-          registry
+  return new Promise((resolve, reject) => {
+    if (force) {
+      if (!githubOrg && !/\//.test(name)) {
+        // we have a problem - in forced mode
+        throw new Error(
+          `Missing githubOrg. Provide it, or add repository config to package.json`
         );
-        prompt(qs).then(resolve).catch(reject);
       }
-    })
-      // tslint:disable-next-line: no-shadowed-variable
-      .then(({ pkgname, description, isPrivate, registry, pkgname1 }) => {
-        // tslint:disable-next-line: no-shadowed-variable
-        const [scope, name] = [
-          "tufan-io",
-          ...((pkgname1 || pkgname) as string).split("/"),
-        ].slice(-2);
-        return manageModule(scope, name, description, isPrivate, registry, cwd);
-      })
-  );
+      resolve({
+        pkgname,
+        description: packageJson.description,
+        isPrivate: packageJson.private !== false,
+        registry,
+      });
+    } else {
+      const qs = questions(
+        pkgname,
+        packageJson.description,
+        packageJson.private !== false,
+        registry
+      );
+      prompt(qs).then(resolve).catch(reject);
+    }
+  }).then(({ pkgname, description, isPrivate, registry, pkgname1 }) => {
+    const [scope, name] = [
+      "tufan-io",
+      ...((pkgname1 || pkgname) as string).split("/"),
+    ].slice(-2);
+    return manageModule(scope, name, description, isPrivate, registry, cwd);
+  });
 }
 
 if (!module.parent) {
   process.on("SIGINT", () => process.exit(-1));
-  // tslint:disable-next-line: no-unused-expression
   yargs
     .scriptName("simple-ci")
     .usage("$0 <cmd> [args]")
@@ -121,7 +115,6 @@ if (!module.parent) {
             alias: ["f"],
             describe: "force non-interactive mode",
           });
-        // tslint:disable-next-line: only-arrow-functions
       },
       (argv) => {
         const {
@@ -141,7 +134,6 @@ if (!module.parent) {
           registry: string;
           force: boolean;
         };
-        // tslint:disable: no-console
         main({
           cwd: path.resolve(dir),
           name,

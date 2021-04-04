@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.questions = void 0;
 const questions = (name, description, isPrivate, registry) => {
-    // tslint:disable: object-literal-sort-keys
     return [
         {
             type: "text",
@@ -36,8 +35,7 @@ const questions = (name, description, isPrivate, registry) => {
             default: (ans) => registry
                 ? registry
                 : ans.isPrivate === true
-                    ? // tslint:disable-next-line: no-duplicate-string
-                        "https://npm.pkg.github.com"
+                    ? "https://npm.pkg.github.com"
                     : "https://registry.npmjs.org",
             choices: [
                 { name: "github", value: "https://npm.pkg.github.com" },
@@ -48,8 +46,10 @@ const questions = (name, description, isPrivate, registry) => {
             when: (ans) => ans.registry === "https://npm.pkg.github.com" && ans.pkgname[0] !== "@",
             type: "text",
             name: "pkgname1",
-            message: "npm module name (needs scope): ",
-            default: (ans) => ans.pkgname,
+            message: "reconfirm module name: ",
+            default: (ans) => ans.registry === "https://npm.pkg.github.com" && ans.pkgname[0] !== "@"
+                ? `@${ans.pkgname}`
+                : ans.pkgname,
             validate: (val, ans) => ans.registry === "https://npm.pkg.github.com" && !!val.match(/^@.*\/.*/)
                 ? true
                 : "Module hosted on github must be of form '@scope/name'",

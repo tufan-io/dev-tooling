@@ -54,10 +54,10 @@ function manageModule(scope, name, description, isPrivate, registry, cwd = proce
             identityTransform,
         ],
         [`templates/tsconfig.json`, `tsconfig.json`, identityTransform],
-        [`templates/tslint.json`, `tslint.json`, identityTransform],
+        [`templates/.eslintrc.js`, `.espintrc.js`, identityTransform],
+        [`templates/.eslintignore`, `.espintignore`, identityTransform],
     ];
     files.forEach(([srcPath, dstPath, transformer]) => {
-        // tslint:disable-next-line: no-console
         console.log(`Updating ${dstPath}`);
         copyOrModify(`${root}/${srcPath}`, `${pDir}/${dstPath}`, transformer);
     });
@@ -83,14 +83,12 @@ function manageModule(scope, name, description, isPrivate, registry, cwd = proce
                 "",
             ].join("\n"),
         };
-        // tslint:disable: tsr-detect-non-literal-fs-filename
         fs.writeFileSync(`${pDir}/src/index.ts`, sample.src, "utf8");
         fs.writeFileSync(`${pDir}/src/test/index.ts`, sample.test, "utf8");
     }
 }
 exports.manageModule = manageModule;
 function copyOrModify(srcPath, dstPath, transformer) {
-    // tslint:disable: tsr-detect-non-literal-fs-filename
     if (!fs.statSync(srcPath).isFile()) {
         throw new Error(`copyOnModify only supports copying files`);
     }

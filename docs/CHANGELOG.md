@@ -1,3 +1,12 @@
+## [0.4.16](https://github.com/tufan-io/simple-ci/compare/0.4.15...0.4.16) (2021-04-04)
+
+
+### Bug Fixes
+
+* more eslint fixes ([ae4485c](https://github.com/tufan-io/simple-ci/commit/ae4485ceabe51de4cf7af4a3580f15bf574977c6))
+
+
+
 ## [0.4.15](https://github.com/tufan-io/simple-ci/compare/0.4.14...0.4.15) (2021-04-04)
 
 

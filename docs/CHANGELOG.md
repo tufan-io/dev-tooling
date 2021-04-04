@@ -1,3 +1,12 @@
+## [0.4.17](https://github.com/tufan-io/simple-ci/compare/0.4.16...0.4.17) (2021-04-04)
+
+
+### Bug Fixes
+
+* typo when copying eslint files ([4f3c982](https://github.com/tufan-io/simple-ci/commit/4f3c9820c7c879fa80c9119544987d0aa99e1be7))
+
+
+
 ## [0.4.16](https://github.com/tufan-io/simple-ci/compare/0.4.15...0.4.16) (2021-04-04)
 
 

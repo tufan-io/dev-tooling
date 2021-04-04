@@ -63,8 +63,8 @@ export function manageModule(
       identityTransform,
     ],
     [`templates/tsconfig.json`, `tsconfig.json`, identityTransform],
-    [`templates/.eslintrc.js`, `.espintrc.js`, identityTransform],
-    [`templates/.eslintignore`, `.espintignore`, identityTransform],
+    [`templates/.eslintrc.js`, `.eslintrc.js`, identityTransform],
+    [`templates/.eslintignore`, `.eslintignore`, identityTransform],
   ];
   files.forEach(
     ([srcPath, dstPath, transformer]: [string, string, TransformFn]) => {

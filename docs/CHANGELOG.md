@@ -1,3 +1,7 @@
+## [0.4.15](https://github.com/tufan-io/simple-ci/compare/0.4.14...0.4.15) (2021-04-04)
+
+
+
 ## [0.4.14](https://github.com/tufan-io/simple-ci/compare/0.4.13...0.4.14) (2021-04-02)
 
 
